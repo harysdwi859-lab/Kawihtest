@@ -3,63 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kawihfy</title>
+    <title>Kawihfy - Digital Player</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #070b14; color: #e2e8f0; font-family: sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        body { background: #070b14; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-spin-slow { animation: spin 3s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4">
-    <h1 class="text-2xl font-bold text-emerald-400 mb-6 uppercase tracking-tighter">KAWIHFY</h1>
+<body class="p-4 pb-40">
     
-    <input type="text" id="q" placeholder="Cari lagu Sunda..." class="w-full p-4 glass rounded-2xl outline-none mb-6">
+    <header class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-black text-emerald-400 italic tracking-tighter">KAWIHFY</h1>
+            <p class="text-[10px] text-emerald-600 font-bold tracking-[0.3em] uppercase">Sunda Player</p>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-black font-black text-xs border-2 border-emerald-400/50 shadow-[0_0_15px_rgba(16,185,129,0.5)]">HARY</div>
+    </header>
 
-    <div id="results" class="space-y-2"></div>
+    <div class="relative mb-8">
+        <input type="text" id="searchInput" 
+               placeholder="Cari lagu Sunda favorit Tuan..." 
+               class="w-full p-4 pl-12 glass rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-white placeholder:text-slate-500">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-5 text-slate-400"></i>
+    </div>
 
-    <div id="player" class="fixed bottom-6 left-4 right-4 glass p-4 rounded-3xl hidden shadow-2xl">
-        <div class="flex items-center gap-4 mb-3 text-sm font-bold" id="info">Memutar...</div>
-        <audio id="audio" controls class="w-full h-8"></audio>
+    <div id="playlist" class="grid grid-cols-1 gap-3">
+        <div class="text-center py-20 text-slate-500 italic">
+            <i class="fa-solid fa-music text-5xl mb-4 opacity-20"></i>
+            <p>Mangga milari lagu, Tuan Yang Mulia...</p>
+        </div>
+    </div>
+
+    <div id="playerBar" class="fixed bottom-6 left-4 right-4 glass p-4 rounded-3xl shadow-2xl hidden border-t border-white/10 transition-all">
+        <div class="flex items-center gap-4 mb-3">
+            <img id="currentPoster" src="" class="w-12 h-12 rounded-xl object-cover shadow-lg border border-white/10">
+            <div class="flex-1 min-w-0">
+                <p id="currentTitle" class="font-bold text-sm truncate text-white uppercase tracking-tight">Judul Lagu</p>
+                <p id="currentArtist" class="text-[11px] text-emerald-500 truncate font-semibold">Artis Sunda</p>
+            </div>
+            <button onclick="closePlayer()" class="text-slate-500 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <audio id="mainAudio" controls class="w-full h-8 brightness-90 contrast-125"></audio>
     </div>
 
     <script>
-        document.getElementById('q').addEventListener('keypress', async (e) => {
-            if (e.key === 'Enter') {
-                const results = document.getElementById('results');
-                results.innerHTML = '<p class="text-center">Milari...</p>';
+        const searchInput = document.getElementById('searchInput');
+        const playlist = document.getElementById('playlist');
+        const playerBar = document.getElementById('playerBar');
+        const mainAudio = document.getElementById('mainAudio');
+
+        searchInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter' && searchInput.value.trim() !== "") {
+                playlist.innerHTML = '<div class="text-center py-20"><i class="fa-solid fa-circle-notch animate-spin text-emerald-400 text-4xl"></i></div>';
                 try {
-                    const res = await fetch(`/api?q=${encodeURIComponent(e.target.value)}`);
-                    const data = await res.json();
-                    results.innerHTML = '';
-                    data.forEach(s => {
-                        const d = document.createElement('div');
-                        d.className = 'p-3 glass rounded-xl flex justify-between items-center';
-                        d.innerHTML = `<span>${s.title}</span><i class="fa-solid fa-play text-emerald-400"></i>`;
-                        d.onclick = () => play(s);
-                        results.appendChild(d);
+                    const response = await fetch(`/api?q=${encodeURIComponent(searchInput.value + ' sunda')}`);
+                    const data = await response.json();
+                    playlist.innerHTML = '';
+                    
+                    if (!data.length) {
+                        playlist.innerHTML = '<p class="text-center py-10 text-slate-500">Teu aya laguna, Tuan.</p>';
+                        return;
+                    }
+
+                    data.forEach(song => {
+                        const card = document.createElement('div');
+                        card.className = 'p-3 flex items-center gap-4 glass cursor-pointer rounded-xl hover:bg-emerald-500/10 transition-all border border-white/5';
+                        card.innerHTML = `
+                            <img src="${song.thumbnails[0].url}" class="w-14 h-14 rounded-lg object-cover">
+                            <div class="flex-1 overflow-hidden">
+                                <p class="font-bold text-sm truncate text-slate-100 uppercase">${song.title}</p>
+                                <p class="text-[10px] text-slate-400 font-medium uppercase">${song.artists[0]?.name || 'Artis'}</p>
+                            </div>
+                            <i class="fa-solid fa-play-circle text-emerald-500 text-2xl"></i>
+                        `;
+                        card.onclick = () => playSong(song);
+                        playlist.appendChild(card);
                     });
-                } catch (err) { results.innerHTML = '<p class="text-red-400 text-center">Gagal, pastikan buka di Vercel, Tuan!</p>'; }
+                } catch (err) {
+                    playlist.innerHTML = '<p class="text-center py-10 text-red-400">Gagal mengambil data, Tuan.</p>';
+                }
             }
         });
 
-        async function play(s) {
-            const p = document.getElementById('player');
-            p.classList.remove('hidden');
-            document.getElementById('info').innerText = s.title;
-            try {
-                const res = await fetch('https://api.cobalt.tools/api/json', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: `https://www.youtube.com/watch?v=${s.videoId}`, downloadMode: 'audio' })
-                });
-                const data = await res.json();
-                if (data.url) {
-                    const a = document.getElementById('audio');
-                    a.src = data.url;
-                    a.play();
+        async function playSong(song) {
+            playerBar.classList.remove('hidden');
+            document.getElementById('currentPoster').src = song.thumbnails[0].url;
+            document.getElementById('currentTitle').innerText = "Nuju nyandak audio...";
+            document.getElementById('currentArtist').innerText = song.artists[0]?.name || 'Artis';
+
+            const videoUrl = `https://www.youtube.com/watch?v=${song.videoId}`;
+            // Daftar server cadangan agar tidak "Server Sibuk"
+            const apiServers = [
+                'https://api.cobalt.tools/api/json',
+                'https://cobalt.shizuri.com/api/json'
+            ];
+
+            let isPlayed = false;
+
+            for (const server of apiServers) {
+                if (isPlayed) break;
+                try {
+                    const res = await fetch(server, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ url: videoUrl, downloadMode: 'audio', audioFormat: 'mp3' })
+                    });
+                    const data = await res.json();
+                    if (data.url) {
+                        mainAudio.src = data.url;
+                        mainAudio.play();
+                        document.getElementById('currentTitle').innerText = song.title;
+                        isPlayed = true;
+                    }
+                } catch (e) {
+                    console.warn("Server gagal, mencoba cadangan...");
                 }
-            } catch (err) { alert("Server audio sibuk, Tuan."); }
+            }
+
+            if (!isPlayed) {
+                document.getElementById('currentTitle').innerText = "Server Sibuk";
+                alert("Sadaya server nuju sibuk, Tuan. Cobian lagu sanes.");
+            }
+        }
+
+        function closePlayer() {
+            mainAudio.pause();
+            playerBar.classList.add('hidden');
         }
     </script>
 </body>
