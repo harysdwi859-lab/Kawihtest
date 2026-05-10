@@ -3,95 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kawihfy - Player</title>
+    <title>Kawihfy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background: #070b14; color: #e2e8f0; font-family: sans-serif; }
         .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-4">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-emerald-400">KAWIHFY</h1>
-        <p class="text-[10px] text-emerald-600 tracking-widest uppercase">Digital Player</p>
-    </div>
+    <h1 class="text-2xl font-bold text-emerald-400 mb-6 uppercase tracking-tighter">KAWIHFY</h1>
+    
+    <input type="text" id="q" placeholder="Cari lagu Sunda..." class="w-full p-4 glass rounded-2xl outline-none mb-6">
 
-    <div class="relative mb-6">
-        <input type="text" id="searchInput" placeholder="Cari lagu..." class="w-full p-4 pl-12 glass rounded-2xl outline-none text-white">
-        <i class="fa-solid fa-search absolute left-4 top-5 text-slate-400"></i>
-    </div>
+    <div id="results" class="space-y-2"></div>
 
-    <div id="playlist" class="space-y-3">
-        <p class="text-center text-slate-500 italic py-10">Mangga milari lagu, Tuan...</p>
-    </div>
-
-    <div id="playerBar" class="fixed bottom-6 left-4 right-4 glass p-4 rounded-3xl hidden shadow-2xl">
-        <div class="flex items-center gap-4 mb-3">
-            <img id="currentPoster" src="" class="w-12 h-12 rounded-lg object-cover">
-            <div class="flex-1 min-w-0">
-                <p id="currentTitle" class="font-bold text-sm truncate text-white">Judul Lagu</p>
-                <p id="currentArtist" class="text-xs text-emerald-500 truncate">Artis</p>
-            </div>
-            <button onclick="document.getElementById('playerBar').classList.add('hidden')" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <audio id="mainAudio" controls class="w-full h-8"></audio>
+    <div id="player" class="fixed bottom-6 left-4 right-4 glass p-4 rounded-3xl hidden shadow-2xl">
+        <div class="flex items-center gap-4 mb-3 text-sm font-bold" id="info">Memutar...</div>
+        <audio id="audio" controls class="w-full h-8"></audio>
     </div>
 
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const playlist = document.getElementById('playlist');
-        const mainAudio = document.getElementById('mainAudio');
-
-        searchInput.addEventListener('keypress', async (e) => {
+        document.getElementById('q').addEventListener('keypress', async (e) => {
             if (e.key === 'Enter') {
-                playlist.innerHTML = '<div class="text-center py-10"><i class="fa-solid fa-circle-notch spinner text-emerald-400 text-3xl"></i></div>';
+                const results = document.getElementById('results');
+                results.innerHTML = '<p class="text-center">Milari...</p>';
                 try {
-                    const res = await fetch(`/api?q=${encodeURIComponent(searchInput.value)}`);
+                    const res = await fetch(`/api?q=${encodeURIComponent(e.target.value)}`);
                     const data = await res.json();
-                    playlist.innerHTML = '';
-                    data.forEach(song => {
-                        const div = document.createElement('div');
-                        div.className = 'p-3 glass rounded-xl flex items-center gap-3 cursor-pointer';
-                        div.innerHTML = `
-                            <img src="${song.thumbnails[0].url}" class="w-12 h-12 rounded-lg">
-                            <div class="flex-1 min-w-0">
-                                <p class="font-bold text-sm truncate text-white">${song.title}</p>
-                                <p class="text-[10px] text-slate-400">${song.artists[0]?.name || 'Unknown'}</p>
-                            </div>
-                            <i class="fa-solid fa-play-circle text-emerald-400 text-xl"></i>`;
-                        div.onclick = () => playSong(song);
-                        playlist.appendChild(div);
+                    results.innerHTML = '';
+                    data.forEach(s => {
+                        const d = document.createElement('div');
+                        d.className = 'p-3 glass rounded-xl flex justify-between items-center';
+                        d.innerHTML = `<span>${s.title}</span><i class="fa-solid fa-play text-emerald-400"></i>`;
+                        d.onclick = () => play(s);
+                        results.appendChild(d);
                     });
-                } catch (err) {
-                    playlist.innerHTML = '<p class="text-center text-red-400 italic">Gagal mengambil data, Tuan.</p>';
-                }
+                } catch (err) { results.innerHTML = '<p class="text-red-400 text-center">Gagal, pastikan buka di Vercel, Tuan!</p>'; }
             }
         });
 
-        async function playSong(song) {
-            document.getElementById('playerBar').classList.remove('hidden');
-            document.getElementById('currentPoster').src = song.thumbnails[0].url;
-            document.getElementById('currentTitle').innerText = "Nuju nyandak...";
-            document.getElementById('currentArtist').innerText = song.artists[0]?.name || 'Artis';
-
+        async function play(s) {
+            const p = document.getElementById('player');
+            p.classList.remove('hidden');
+            document.getElementById('info').innerText = s.title;
             try {
                 const res = await fetch('https://api.cobalt.tools/api/json', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: `https://www.youtube.com/watch?v=${song.videoId}`, downloadMode: 'audio' })
+                    body: JSON.stringify({ url: `https://www.youtube.com/watch?v=${s.videoId}`, downloadMode: 'audio' })
                 });
                 const data = await res.json();
                 if (data.url) {
-                    mainAudio.src = data.url;
-                    mainAudio.play();
-                    document.getElementById('currentTitle').innerText = song.title;
+                    const a = document.getElementById('audio');
+                    a.src = data.url;
+                    a.play();
                 }
-            } catch (err) {
-                document.getElementById('currentTitle').innerText = "Gagal memutar";
-            }
+            } catch (err) { alert("Server audio sibuk, Tuan."); }
         }
     </script>
 </body>
