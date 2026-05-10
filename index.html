@@ -52,89 +52,29 @@
     </div>
 
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const playlist = document.getElementById('playlist');
-        const playerBar = document.getElementById('playerBar');
-        const mainAudio = document.getElementById('mainAudio');
-
-        searchInput.addEventListener('keypress', async (e) => {
-            if (e.key === 'Enter' && searchInput.value.trim() !== "") {
-                playlist.innerHTML = '<div class="text-center py-20"><i class="fa-solid fa-circle-notch animate-spin text-emerald-400 text-4xl"></i></div>';
-                try {
-                    const response = await fetch(`/api?q=${encodeURIComponent(searchInput.value + ' sunda')}`);
-                    const data = await response.json();
-                    playlist.innerHTML = '';
-                    
-                    if (!data.length) {
-                        playlist.innerHTML = '<p class="text-center py-10 text-slate-500">Teu aya laguna, Tuan.</p>';
-                        return;
-                    }
-
-                    data.forEach(song => {
-                        const card = document.createElement('div');
-                        card.className = 'p-3 flex items-center gap-4 glass cursor-pointer rounded-xl hover:bg-emerald-500/10 transition-all border border-white/5';
-                        card.innerHTML = `
-                            <img src="${song.thumbnails[0].url}" class="w-14 h-14 rounded-lg object-cover">
-                            <div class="flex-1 overflow-hidden">
-                                <p class="font-bold text-sm truncate text-slate-100 uppercase">${song.title}</p>
-                                <p class="text-[10px] text-slate-400 font-medium uppercase">${song.artists[0]?.name || 'Artis'}</p>
-                            </div>
-                            <i class="fa-solid fa-play-circle text-emerald-500 text-2xl"></i>
-                        `;
-                        card.onclick = () => playSong(song);
-                        playlist.appendChild(card);
-                    });
-                } catch (err) {
-                    playlist.innerHTML = '<p class="text-center py-10 text-red-400">Gagal mengambil data, Tuan.</p>';
-                }
-            }
-        });
-
-        async function playSong(song) {
-            playerBar.classList.remove('hidden');
-            document.getElementById('currentPoster').src = song.thumbnails[0].url;
-            document.getElementById('currentTitle').innerText = "Nuju nyandak audio...";
-            document.getElementById('currentArtist').innerText = song.artists[0]?.name || 'Artis';
-
-            const videoUrl = `https://www.youtube.com/watch?v=${song.videoId}`;
-            // Daftar server cadangan agar tidak "Server Sibuk"
-            const apiServers = [
-                'https://api.cobalt.tools/api/json',
-                'https://cobalt.shizuri.com/api/json'
-            ];
-
-            let isPlayed = false;
-
-            for (const server of apiServers) {
-                if (isPlayed) break;
-                try {
-                    const res = await fetch(server, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify({ url: videoUrl, downloadMode: 'audio', audioFormat: 'mp3' })
-                    });
-                    const data = await res.json();
-                    if (data.url) {
-                        mainAudio.src = data.url;
-                        mainAudio.play();
-                        document.getElementById('currentTitle').innerText = song.title;
-                        isPlayed = true;
-                    }
-                } catch (e) {
-                    console.warn("Server gagal, mencoba cadangan...");
-                }
-            }
-
-            if (!isPlayed) {
-                document.getElementById('currentTitle').innerText = "Server Sibuk";
-                alert("Sadaya server nuju sibuk, Tuan. Cobian lagu sanes.");
-            }
+    <script>
+async function playSong(song) {
+    playerBar.classList.remove('hidden');
+    document.getElementById('currentPoster').src = song.thumbnails[0].url;
+    document.getElementById('currentTitle').innerText = "Nuju nyandak audio...";
+    
+    // Menggunakan Piped API untuk mengambil stream langsung
+    try {
+        const res = await fetch(`https://pipedapi.kavin.rocks/streams/${song.videoId}`);
+        const data = await res.json();
+        // Mencari stream yang tipenya audio saja
+        const audioStream = data.audioStreams.find(s => s.format === 'M4A' || s.codec === 'opus');
+        
+        if (audioStream) {
+            mainAudio.src = audioStream.url;
+            mainAudio.play();
+            document.getElementById('currentTitle').innerText = song.title;
         }
+    } catch (err) {
+        alert("Server Piped nuju sibuk, Tuan.");
+    }
+}
+</script>
 
-        function closePlayer() {
-            mainAudio.pause();
-            playerBar.classList.add('hidden');
-        }
-    </script>
 </body>
 </html>
