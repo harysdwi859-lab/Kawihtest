@@ -80,7 +80,8 @@
                 
                 try {
                     // Sesuai dengan route API di Vercel Tuan
-                    const response = await fetch(`/api?q=${encodeURIComponent(query + ' sunda')}`);
+                    const response = await fetch(`https://kawihtest.vercel.app/api?q=${encodeURIComponent(query + ' sunda')}`);
+
                     const data = await response.json();
                     
                     playlist.innerHTML = '';
