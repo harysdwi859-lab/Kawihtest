@@ -1,75 +1,1161 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="su" id="htmlRoot">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kawihfy - Anti Gagal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body { background: #070b14; color: #e2e8f0; font-family: sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kawihfy – Musik Sunda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050a0e;
+      --surface: #0d1a20;
+      --surface2: #122330;
+      --accent: #00c896;
+      --accent2: #00916a;
+      --gold: #f5c842;
+      --text: #dff3ec;
+      --muted: #5a8070;
+      --border: rgba(0,200,150,0.13);
+      --radius: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%; left: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,200,150,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%; right: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(245,200,66,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      width: 240px;
+      min-width: 240px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      position: relative;
+      z-index: 10;
+      overflow-y: auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      padding: 0 8px;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--accent);
+    }
+    .logo-text span { color: var(--gold); }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex;
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 28px;
+      gap: 2px;
+    }
+    .lang-btn {
+      flex: 1;
+      padding: 6px 0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Sora', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #050a0e;
+    }
+
+    .nav-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover, .nav-item.active {
+      color: var(--text);
+      background: var(--surface2);
+    }
+    .nav-item.active { color: var(--accent); }
+    .nav-item svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    .playlist-list { display: flex; flex-direction: column; gap: 2px; }
+    .playlist-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .playlist-item:hover { color: var(--text); background: var(--surface2); }
+    .pl-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    /* === MAIN === */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 28px;
+      background: rgba(5,10,14,0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .search-wrap {
+      flex: 1;
+      max-width: 440px;
+      position: relative;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      fill: var(--muted);
+    }
+    .search-input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 11px 16px 11px 42px;
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .search-input::placeholder { color: var(--muted); }
+
+    .topbar-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .btn-premium {
+      padding: 9px 20px;
+      border-radius: 50px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-premium:hover { background: var(--gold); color: #050a0e; }
+    .btn-login {
+      padding: 9px 20px;
+      border-radius: 50px;
+      border: none;
+      background: var(--accent);
+      color: #050a0e;
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-login:hover { background: #00e6ac; }
+
+    /* === CONTENT === */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px;
+      padding-bottom: 120px;
+    }
+    .content::-webkit-scrollbar { width: 4px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--surface2) 0%, rgba(0,200,150,0.12) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '♪';
+      position: absolute;
+      right: 20px; top: 10px;
+      font-size: 120px;
+      color: rgba(0,200,150,0.06);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(0,200,150,0.15);
+      border: 1px solid rgba(0,200,150,0.3);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+    .hero-btns { display: flex; gap: 10px; }
+    .btn-play-hero {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      border: none;
+      background: var(--accent);
+      color: #050a0e;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-play-hero:hover { background: #00e6ac; transform: scale(1.02); }
+    .btn-explore {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-explore:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Section */
+    .section { margin-bottom: 36px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .show-all {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .show-all:hover { color: var(--accent); }
+
+    /* Card grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { transform: translateY(-3px); border-color: rgba(0,200,150,0.3); background: rgba(18,35,48,0.95); }
+    .card:hover .play-btn { opacity: 1; transform: scale(1) translateY(0); }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      background: var(--surface);
+    }
+    .card-img.round { border-radius: 50%; }
+    .card-img.skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-sub {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .play-btn {
+      position: absolute;
+      bottom: 52px; right: 14px;
+      width: 38px; height: 38px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transform: scale(0.8) translateY(6px);
+      transition: all 0.25s;
+      box-shadow: 0 4px 16px rgba(0,200,150,0.4);
+    }
+    .play-btn svg { fill: #050a0e; width: 18px; height: 18px; margin-left: 2px; }
+
+    /* Loading state */
+    .loading-text {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 24px 0;
+      display: none;
+    }
+    .loading-text.show { display: block; }
+
+    /* Search results */
+    #searchResults { display: none; }
+    #searchResults.show { display: block; }
+    #homeContent.hide { display: none; }
+
+    .track-list { display: flex; flex-direction: column; gap: 4px; }
+    .track-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .track-item:hover { background: var(--surface2); }
+    .track-item.playing { background: rgba(0,200,150,0.1); }
+    .track-num {
+      width: 28px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+    .track-thumb {
+      width: 42px; height: 42px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--surface2);
+      flex-shrink: 0;
+    }
+    .track-info { flex: 1; min-width: 0; }
+    .track-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .track-artist {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .track-dur {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      flex-shrink: 0;
+    }
+
+    /* === PLAYER === */
+    .player-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(13,26,32,0.97);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      padding: 14px 28px;
+      display: none;
+      align-items: center;
+      gap: 20px;
+      z-index: 100;
+    }
+    .player-bar.show { display: flex; }
+
+    .player-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 200px;
+      flex: 1;
+    }
+    .player-thumb {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--surface2);
+    }
+    .player-title { font-size: 13px; font-weight: 700; color: var(--text); }
+    .player-artist { font-size: 11px; color: var(--muted); }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 2;
+      justify-content: center;
+    }
+    .ctrl-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      transition: all 0.2s;
+      display: flex; align-items: center;
+    }
+    .ctrl-btn:hover { color: var(--text); }
+    .ctrl-btn svg { fill: currentColor; width: 20px; height: 20px; }
+    .play-pause-btn {
+      width: 44px; height: 44px;
+      background: var(--accent);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .play-pause-btn:hover { background: #00e6ac; transform: scale(1.05); }
+    .play-pause-btn svg { fill: #050a0e; width: 20px; height: 20px; margin-left: 2px; }
+    .play-pause-btn.paused svg { margin-left: 0; }
+
+    .player-progress { flex: 2; display: flex; align-items: center; gap: 10px; }
+    .time-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; min-width: 36px; }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.5s linear;
+    }
+
+    /* Chart cards */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .chart-card {
+      border-radius: var(--radius);
+      padding: 20px;
+      min-height: 120px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .chart-card:hover { transform: translateY(-2px); }
+    .chart-card.green { background: linear-gradient(135deg, #0d3326, #1a5c45); border: 1px solid rgba(0,200,150,0.2); }
+    .chart-card.gold { background: linear-gradient(135deg, #2d2000, #5c4200); border: 1px solid rgba(245,200,66,0.2); }
+    .chart-card.red { background: linear-gradient(135deg, #2d0d0d, #5c1a1a); border: 1px solid rgba(200,50,50,0.2); }
+    .chart-card.blue { background: linear-gradient(135deg, #0d1a2d, #1a2d5c); border: 1px solid rgba(50,100,200,0.2); }
+    .chart-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .chart-card p { font-size: 12px; color: var(--muted); }
+    .chart-num {
+      position: absolute;
+      bottom: 12px; right: 16px;
+      font-size: 48px;
+      font-weight: 800;
+      opacity: 0.15;
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Hidden YT player */
+    #yt-container { position: fixed; bottom: -9999px; opacity: 0; pointer-events: none; }
+
+    /* Scroll button */
+    .error-msg {
+      background: rgba(200,50,50,0.1);
+      border: 1px solid rgba(200,50,50,0.2);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #e07070;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { padding: 16px; }
+      .card-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .player-progress { display: none; }
+      .topbar { padding: 14px 16px; }
+    }
+  </style>
 </head>
-<body class="p-4 pb-40">
-    <h1 class="text-3xl font-black text-emerald-400 italic mb-6">KAWIHFY V1</h1>
-    <p>Audio Player like Spotify yang mengutamakan lagu Sunda</p>
-    
-    <input type="text" id="searchInput" placeholder="Cari lagu Sunda..." class="w-full p-4 glass rounded-2xl outline-none mb-8">
+<body>
 
-    <div id="playlist" class="space-y-3"></div>
-
-    <div id="yt-container" class="hidden">
-        <div id="yt-player"></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🎵</div>
+      <div class="logo-text">Kawih<span>fy</span></div>
     </div>
 
-    <div id="playerBar" class="fixed bottom-6 left-4 right-4 glass p-4 rounded-3xl hidden flex flex-col gap-3">
-        <div class="flex items-center gap-4">
-            <img id="currentPoster" src="" class="w-12 h-12 rounded-xl object-cover">
-            <div class="flex-1 min-w-0">
-                <p id="currentTitle" class="font-bold text-sm truncate text-white uppercase">Judul Lagu</p>
-                <p class="text-[10px] text-emerald-500 font-bold uppercase">ExoildExclusive</p>
+    <!-- Language Toggle -->
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnSu" onclick="setLang('su')">Sunda</button>
+      <button class="lang-btn" id="btnId" onclick="setLang('id')">Indonesia</button>
+    </div>
+
+    <div class="nav-label" data-su="Ménu" data-id="Menu">Ménu</div>
+
+    <a class="nav-item active" onclick="showHome()">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span data-su="Imah" data-id="Beranda">Imah</span>
+    </a>
+    <a class="nav-item" onclick="focusSearch()">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span data-su="Néangan" data-id="Cari">Néangan</span>
+    </a>
+    <a class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 14H8v-2h8v2zm0-4H8v-2h8v2zm0-4H8V6h8v2z"/></svg>
+      <span data-su="Koléksi" data-id="Koleksi">Koléksi</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <div class="nav-label" data-su="Daptar Kawih" data-id="Daftar Lagu">Daptar Kawih</div>
+
+    <div class="playlist-list">
+      <div class="playlist-item" onclick="searchQuery('Darso tembang Sunda')">
+        <div class="pl-dot"></div>
+        <span>Kawih Darso</span>
+      </div>
+      <div class="playlist-item" onclick="searchQuery('Kacapi Suling Sunda')">
+        <div class="pl-dot" style="background:#f5c842"></div>
+        <span>Kacapi Suling</span>
+      </div>
+      <div class="playlist-item" onclick="searchQuery('Degung Sunda klasik')">
+        <div class="pl-dot" style="background:#4287f5"></div>
+        <span>Degung Klasik</span>
+      </div>
+      <div class="playlist-item" onclick="searchQuery('pop Sunda modern')">
+        <div class="pl-dot" style="background:#f542a1"></div>
+        <span>Pop Sunda Modern</span>
+      </div>
+      <div class="playlist-item" onclick="searchQuery('jaipong Sunda')">
+        <div class="pl-dot" style="background:#f5a442"></div>
+        <span>Jaipong</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input class="search-input" id="searchInput" type="text" 
+          data-placeholder-su="Néangan kawih Sunda..." 
+          data-placeholder-id="Cari lagu Sunda..."
+          placeholder="Néangan kawih Sunda..." />
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-premium" data-su="Jadi Premium" data-id="Jadi Premium">Jadi Premium</button>
+        <button class="btn-login" data-su="Lebet" data-id="Masuk">Lebet</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="loading-text" id="loadingText">
+        <span data-su="Milarian..." data-id="Mencari...">Milarian...</span>
+      </div>
+
+      <!-- Search Results -->
+      <div id="searchResults">
+        <div class="section-header">
+          <div class="section-title" id="searchTitle">Hasil Néangan</div>
+        </div>
+        <div class="track-list" id="trackList"></div>
+      </div>
+
+      <!-- Home Content -->
+      <div id="homeContent">
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-tag" data-su="Musik Sunda Pangalusna" data-id="Musik Sunda Terbaik">Musik Sunda Pangalusna</div>
+          <h1><em data-su="Kawih" data-id="Lagu">Kawih</em> <span data-su="Sunda Urang" data-id="Sunda Kita">Sunda Urang</span></h1>
+          <p data-su="Dengekeun kawih Sunda nu pangalusna — ti jaman baheula nepi ka kiwari." data-id="Dengarkan lagu Sunda terbaik — dari zaman dulu hingga sekarang.">
+            Dengekeun kawih Sunda nu pangalusna — ti jaman baheula nepi ka kiwari.
+          </p>
+          <div class="hero-btns">
+            <button class="btn-play-hero" onclick="searchQuery('kawih Sunda populer 2024')">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <span data-su="Putar Ayeuna" data-id="Putar Sekarang">Putar Ayeuna</span>
+            </button>
+            <button class="btn-explore" onclick="searchQuery('tembang Sunda')">
+              <span data-su="Jajah Kawih" data-id="Jelajah Lagu">Jajah Kawih</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Trending -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title" data-su="Kawih Keur Trend" data-id="Lagu Sedang Tren">Kawih Keur Trend</div>
+            <a class="show-all" onclick="searchQuery('kawih Sunda viral 2024')" data-su="Tingali Sadayana" data-id="Lihat Semua">Tingali Sadayana</a>
+          </div>
+          <div class="card-grid" id="trendingGrid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Artists -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title" data-su="Artis Populér" data-id="Artis Populer">Artis Populér</div>
+            <a class="show-all" onclick="searchQuery('penyanyi Sunda terkenal')" data-su="Tingali Sadayana" data-id="Lihat Semua">Tingali Sadayana</a>
+          </div>
+          <div class="card-grid" id="artistsGrid"></div>
+        </div>
+
+        <!-- Charts -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title" data-su="Chart Musik Sunda" data-id="Chart Musik Sunda">Chart Musik Sunda</div>
+          </div>
+          <div class="chart-grid">
+            <div class="chart-card green" onclick="searchQuery('top Sunda 2024')">
+              <h3 data-su="Top Kawih" data-id="Top Lagu">Top Kawih</h3>
+              <p data-su="Mingguan" data-id="Mingguan">Mingguan</p>
+              <div class="chart-num">50</div>
             </div>
-            <button onclick="closePlayer()" class="text-slate-400 p-2"><i class="fa-solid fa-xmark"></i></button>
+            <div class="chart-card gold" onclick="searchQuery('degung Sunda populer')">
+              <h3>Top Degung</h3>
+              <p data-su="Kacapi Suling" data-id="Kacapi Suling">Kacapi Suling</p>
+              <div class="chart-num">🎶</div>
+            </div>
+            <div class="chart-card red" onclick="searchQuery('jaipong terpopuler')">
+              <h3>Viral Jaipong</h3>
+              <p data-su="Sapopoé" data-id="Harian">Sapopoé</p>
+              <div class="chart-num">🔥</div>
+            </div>
+            <div class="chart-card blue" onclick="searchQuery('pop Sunda 2024')">
+              <h3>Pop Sunda</h3>
+              <p data-su="Kiwari" data-id="Modern">Kiwari</p>
+              <div class="chart-num">✨</div>
+            </div>
+          </div>
         </div>
-        <div class="flex justify-center gap-6 text-2xl text-emerald-400">
-            <button onclick="ytPlayer.pauseVideo()"><i class="fa-solid fa-pause"></i></button>
-            <button onclick="ytPlayer.playVideo()"><i class="fa-solid fa-play"></i></button>
+
+        <!-- Genres -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title" data-su="Genre Kawih Sunda" data-id="Genre Lagu Sunda">Genre Kawih Sunda</div>
+          </div>
+          <div class="card-grid" id="genreGrid"></div>
         </div>
+      </div>
     </div>
+  </main>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        let ytPlayer;
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', { height: '0', width: '0', videoId: '' });
+  <!-- Player Bar -->
+  <div class="player-bar" id="playerBar">
+    <div class="player-info">
+      <img class="player-thumb" id="playerThumb" src="" alt="">
+      <div>
+        <div class="player-title" id="playerTitle">—</div>
+        <div class="player-artist" id="playerArtist">—</div>
+      </div>
+    </div>
+    <div class="player-controls">
+      <button class="ctrl-btn" id="btnPrev" onclick="playPrev()">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlayPause()">
+        <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="ctrl-btn" id="btnNext" onclick="playNext()">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+    <div class="player-progress">
+      <span class="time-label" id="currentTime">0:00</span>
+      <div class="progress-bar" id="progressBar" onclick="seekTo(event)">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <span class="time-label" id="totalTime">0:00</span>
+    </div>
+  </div>
+
+  <!-- Hidden YouTube Player -->
+  <div id="yt-container">
+    <div id="yt-player"></div>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // ====== STATE ======
+    let currentLang = 'su';
+    let ytPlayer = null;
+    let isPlaying = false;
+    let currentTrackIndex = -1;
+    let currentQueue = [];
+    let progressInterval = null;
+
+    // ====== LANGUAGE ======
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById('btnSu').classList.toggle('active', lang === 'su');
+      document.getElementById('btnId').classList.toggle('active', lang === 'id');
+      document.querySelectorAll('[data-su]').forEach(el => {
+        if (el.tagName === 'INPUT') {
+          el.placeholder = el.getAttribute('data-placeholder-' + lang) || el.getAttribute('data-su');
+        } else {
+          el.textContent = el.getAttribute('data-' + lang) || el.textContent;
         }
+      });
+      document.getElementById('searchInput').placeholder =
+        lang === 'su' ? 'Néangan kawih Sunda...' : 'Cari lagu Sunda...';
+    }
 
-        const searchInput = document.getElementById('searchInput');
-        const playlist = document.getElementById('playlist');
+    // ====== YOUTUBE API ======
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('yt-player', {
+        height: '0', width: '0',
+        playerVars: { autoplay: 0 },
+        events: {
+          onStateChange: onPlayerStateChange,
+          onReady: () => { loadHomeContent(); }
+        }
+      });
+    }
 
-        searchInput.addEventListener('keypress', async (e) => {
-            if (e.key === 'Enter') {
-                playlist.innerHTML = '<p class="text-center italic">Milari...</p>';
-                const res = await fetch(`/api?q=${encodeURIComponent(searchInput.value + ' sunda')}`);
-                const data = await res.json();
-                playlist.innerHTML = '';
-                data.forEach(song => {
-                    const d = document.createElement('div');
-                    d.className = 'p-3 glass rounded-xl flex justify-between items-center cursor-pointer hover:bg-emerald-500/10';
-                    d.innerHTML = `<span class="truncate pr-4 uppercase text-xs font-bold text-slate-200">${song.title}</span><i class="fa-solid fa-play-circle text-emerald-400 text-2xl"></i>`;
-                    d.onclick = () => {
-                        document.getElementById('playerBar').classList.remove('hidden');
-                        document.getElementById('currentPoster').src = song.thumbnails[0].url;
-                        document.getElementById('currentTitle').innerText = song.title;
-                        ytPlayer.loadVideoById(song.videoId);
-                    };
-                    playlist.appendChild(d);
-                });
-            }
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        isPlaying = true;
+        updatePlayPauseBtn();
+        startProgressTracking();
+      } else if (event.data === YT.PlayerState.PAUSED) {
+        isPlaying = false;
+        updatePlayPauseBtn();
+      } else if (event.data === YT.PlayerState.ENDED) {
+        playNext();
+      }
+    }
+
+    function updatePlayPauseBtn() {
+      const btn = document.getElementById('playPauseBtn');
+      if (isPlaying) {
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="#050a0e" width="20" height="20"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+      } else {
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="#050a0e" width="20" height="20"><path d="M8 5v14l11-7z"/></svg>';
+      }
+    }
+
+    function togglePlayPause() {
+      if (!ytPlayer) return;
+      if (isPlaying) { ytPlayer.pauseVideo(); } else { ytPlayer.playVideo(); }
+    }
+
+    function playNext() {
+      if (currentQueue.length === 0) return;
+      currentTrackIndex = (currentTrackIndex + 1) % currentQueue.length;
+      loadTrack(currentQueue[currentTrackIndex]);
+    }
+
+    function playPrev() {
+      if (currentQueue.length === 0) return;
+      currentTrackIndex = (currentTrackIndex - 1 + currentQueue.length) % currentQueue.length;
+      loadTrack(currentQueue[currentTrackIndex]);
+    }
+
+    function loadTrack(track) {
+      if (!ytPlayer || !track) return;
+      document.getElementById('playerBar').classList.add('show');
+      document.getElementById('playerThumb').src = track.thumb;
+      document.getElementById('playerTitle').textContent = track.title;
+      document.getElementById('playerArtist').textContent = track.artist;
+      ytPlayer.loadVideoById(track.videoId);
+      isPlaying = true;
+      updatePlayPauseBtn();
+      highlightTrack();
+    }
+
+    function highlightTrack() {
+      document.querySelectorAll('.track-item').forEach((el, i) => {
+        el.classList.toggle('playing', i === currentTrackIndex);
+      });
+    }
+
+    function startProgressTracking() {
+      clearInterval(progressInterval);
+      progressInterval = setInterval(() => {
+        if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+        const cur = ytPlayer.getCurrentTime() || 0;
+        const dur = ytPlayer.getDuration() || 0;
+        if (dur > 0) {
+          document.getElementById('progressFill').style.width = (cur / dur * 100) + '%';
+          document.getElementById('currentTime').textContent = fmtTime(cur);
+          document.getElementById('totalTime').textContent = fmtTime(dur);
+        }
+      }, 1000);
+    }
+
+    function seekTo(e) {
+      if (!ytPlayer) return;
+      const bar = document.getElementById('progressBar');
+      const pct = e.offsetX / bar.offsetWidth;
+      ytPlayer.seekTo(ytPlayer.getDuration() * pct, true);
+    }
+
+    function fmtTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    // ====== SEARCH via ytmusicapi proxy (InvidiousAPI as fallback) ======
+    async function searchYTMusic(query) {
+      // Use Invidious (open source YT frontend) API — free, no key needed
+      const instances = [
+        'https://invidious.slipfox.xyz',
+        'https://vid.puffyan.us',
+        'https://invidious.nerdvpn.de'
+      ];
+      
+      for (const base of instances) {
+        try {
+          const url = `${base}/api/v1/search?q=${encodeURIComponent(query)}&type=video&fields=videoId,title,author,lengthSeconds,videoThumbnails`;
+          const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            return data.slice(0, 20).map(v => ({
+              videoId: v.videoId,
+              title: v.title,
+              artist: v.author,
+              duration: v.lengthSeconds,
+              thumb: v.videoThumbnails?.[v.videoThumbnails.length - 1]?.url ||
+                     `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`
+            }));
+          }
+        } catch(e) { continue; }
+      }
+      throw new Error('Teu tiasa nyambung ka server.');
+    }
+
+    async function searchQuery(q) {
+      const input = document.getElementById('searchInput');
+      input.value = q;
+      await doSearch(q);
+    }
+
+    async function doSearch(query) {
+      if (!query.trim()) return;
+      document.getElementById('homeContent').classList.add('hide');
+      document.getElementById('searchResults').classList.add('show');
+      document.getElementById('loadingText').classList.add('show');
+      document.getElementById('trackList').innerHTML = '';
+      document.getElementById('errorMsg').classList.remove('show');
+
+      const q = query.includes('sunda') || query.includes('Sunda') ? query : query + ' Sunda';
+
+      try {
+        const tracks = await searchYTMusic(q);
+        currentQueue = tracks;
+        renderTrackList(tracks);
+        document.getElementById('searchTitle').textContent =
+          currentLang === 'su' ? `Hasil: "${query}"` : `Hasil pencarian: "${query}"`;
+      } catch(e) {
+        document.getElementById('errorMsg').textContent =
+          currentLang === 'su'
+            ? '⚠️ Maaf, teu tiasa milarian ayeuna. Cobian deui engké.'
+            : '⚠️ Maaf, tidak dapat mencari sekarang. Coba lagi nanti.';
+        document.getElementById('errorMsg').classList.add('show');
+      } finally {
+        document.getElementById('loadingText').classList.remove('show');
+      }
+    }
+
+    function renderTrackList(tracks) {
+      const list = document.getElementById('trackList');
+      list.innerHTML = '';
+      tracks.forEach((t, i) => {
+        const el = document.createElement('div');
+        el.className = 'track-item';
+        el.innerHTML = `
+          <div class="track-num">${i + 1}</div>
+          <img class="track-thumb" src="${t.thumb}" alt="" onerror="this.src='https://i.ytimg.com/vi/${t.videoId}/default.jpg'">
+          <div class="track-info">
+            <div class="track-name">${esc(t.title)}</div>
+            <div class="track-artist">${esc(t.artist)}</div>
+          </div>
+          <div class="track-dur">${t.duration ? fmtTime(t.duration) : '—'}</div>
+        `;
+        el.onclick = () => {
+          currentTrackIndex = i;
+          loadTrack(t);
+          highlightTrack();
+        };
+        list.appendChild(el);
+      });
+    }
+
+    function esc(str) {
+      return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // ====== HOME CONTENT ======
+    const SUNDA_ARTISTS = [
+      { name: 'Darso', query: 'Darso penyanyi Sunda', emoji: '🎤' },
+      { name: 'Nining Meida', query: 'Nining Meida kawih Sunda', emoji: '🌺' },
+      { name: 'Nia Daniati', query: 'Nia Daniati Sunda', emoji: '🎶' },
+      { name: 'Doel Sumbang', query: 'Doel Sumbang lagu Sunda', emoji: '🎸' },
+      { name: 'Detty Kurnia', query: 'Detty Kurnia Sunda', emoji: '🌸' },
+      { name: 'Ida Widawati', query: 'Ida Widawati kawih Sunda', emoji: '🎵' },
+    ];
+
+    const SUNDA_GENRES = [
+      { name: 'Degung', query: 'degung Sunda', color: '#0d3326', emoji: '🎼' },
+      { name: 'Kacapi Suling', query: 'kacapi suling Sunda', color: '#2d2000', emoji: '🎐' },
+      { name: 'Jaipong', query: 'jaipong Sunda', color: '#2d0d0d', emoji: '🥁' },
+      { name: 'Pop Sunda', query: 'pop Sunda modern', color: '#0d1a2d', emoji: '🎧' },
+      { name: 'Cianjuran', query: 'tembang cianjuran', color: '#1a0d2d', emoji: '🎹' },
+      { name: 'Calung', query: 'calung Sunda', color: '#0d2d1a', emoji: '🪘' },
+    ];
+
+    const TRENDING_QUERIES = [
+      'Darso Sabilulungan', 'Bubuy Bulan kawih Sunda', 'Manuk Dadali Sunda',
+      'Nining Meida Es Lilin', 'Tokecang kawih Sunda', 'Pepeling Kang Ibing'
+    ];
+
+    async function loadHomeContent() {
+      // Render artist placeholders
+      const ag = document.getElementById('artistsGrid');
+      SUNDA_ARTISTS.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img round" style="background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:48px;aspect-ratio:1;border-radius:50%">${a.emoji}</div>
+          <div class="card-title">${a.name}</div>
+          <div class="card-sub">Artis</div>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        `;
+        card.onclick = () => searchQuery(a.query);
+        ag.appendChild(card);
+      });
+
+      // Render genre cards
+      const gg = document.getElementById('genreGrid');
+      SUNDA_GENRES.forEach(g => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.background = g.color;
+        card.innerHTML = `
+          <div style="font-size:48px;text-align:center;padding:20px 0">${g.emoji}</div>
+          <div class="card-title">${g.name}</div>
+          <div class="card-sub" data-su="Genre kawih" data-id="Genre lagu">Genre kawih</div>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        `;
+        card.onclick = () => searchQuery(g.query);
+        gg.appendChild(card);
+      });
+
+      // Load trending (first 6 results from search)
+      const tg = document.getElementById('trendingGrid');
+      // Skeleton
+      for (let i = 0; i < 6; i++) {
+        const sk = document.createElement('div');
+        sk.className = 'card';
+        sk.innerHTML = `<div class="card-img skeleton"></div><div class="card-title" style="background:var(--surface2);height:14px;border-radius:4px;margin-bottom:8px"></div><div class="card-sub" style="background:var(--surface2);height:10px;width:70%;border-radius:4px"></div>`;
+        tg.appendChild(sk);
+      }
+
+      try {
+        const results = await searchYTMusic('kawih Sunda populer 2024');
+        tg.innerHTML = '';
+        results.slice(0, 7).forEach((t, i) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img class="card-img" src="${t.thumb}" alt="${esc(t.title)}" onerror="this.src='https://i.ytimg.com/vi/${t.videoId}/default.jpg'">
+            <div class="card-title">${esc(t.title)}</div>
+            <div class="card-sub">${esc(t.artist)}</div>
+            <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          `;
+          card.onclick = () => {
+            currentQueue = results.slice(0, 7);
+            currentTrackIndex = i;
+            loadTrack(t);
+          };
+          tg.appendChild(card);
         });
+      } catch(e) {
+        tg.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px">Gagal ngamuat kawih trend.</div>';
+      }
+    }
 
-        function closePlayer() { ytPlayer.stopVideo(); document.getElementById('playerBar').classList.add('hidden'); }
-    </script>
+    // ====== SEARCH INPUT ======
+    document.getElementById('searchInput').addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        await doSearch(e.target.value);
+      }
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      if (!e.target.value.trim()) showHome();
+    });
+
+    function showHome() {
+      document.getElementById('homeContent').classList.remove('hide');
+      document.getElementById('searchResults').classList.remove('show');
+      document.getElementById('searchInput').value = '';
+    }
+
+    function focusSearch() {
+      document.getElementById('searchInput').focus();
+    }
+
+    // Init lang
+    setLang('su');
+  </script>
 </body>
 </html>
