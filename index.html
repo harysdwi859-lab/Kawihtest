@@ -898,27 +898,48 @@ function updateSppUI() {
 
 // ===== NORMALIZE =====
 function normalizeTrack(raw) {
-  const videoId = raw.videoId||raw.video_id||'';
-  const title = raw.title||raw.name||'(Unknown)';
+  // API sudah return format bersih: {videoId, title, artist, thumb}
+  // Tapi tetap handle format lama/ytmusicapi raw sebagai fallback
+  const videoId = raw.videoId || raw.video_id || '';
+  if (!videoId) return null;
+
+  const title = raw.title || raw.name || '(Unknown)';
+
+  // artist: sudah string dari API, tapi handle array juga (fallback)
   let artist = '';
-  if (Array.isArray(raw.artists)&&raw.artists.length>0) artist=raw.artists.map(a=>a.name||a).join(', ');
-  else if (raw.artist) artist=raw.artist;
-  else if (raw.author) artist=raw.author;
+  if (typeof raw.artist === 'string' && raw.artist) {
+    artist = raw.artist;
+  } else if (Array.isArray(raw.artists) && raw.artists.length > 0) {
+    artist = raw.artists.map(a => (typeof a === 'object' ? a.name : a) || '').join(', ');
+  } else if (raw.author) {
+    artist = raw.author;
+  }
+
+  // thumb: sudah string dari API, fallback ke thumbnails array atau default
   let thumb = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
-  if (Array.isArray(raw.thumbnails)&&raw.thumbnails.length>0) {
-    const last=raw.thumbnails[raw.thumbnails.length-1];
-    if (last&&last.url) thumb=last.url;
-  } else if (raw.thumb) thumb=raw.thumb;
+  if (typeof raw.thumb === 'string' && raw.thumb) {
+    thumb = raw.thumb;
+  } else if (Array.isArray(raw.thumbnails) && raw.thumbnails.length > 0) {
+    const last = raw.thumbnails[raw.thumbnails.length - 1];
+    if (last && last.url) thumb = last.url;
+  }
+
   return { videoId, title, artist, thumb };
 }
 
 // ===== API =====
 async function fetchFromAPI(query, maxResults=50) {
-  const res = await fetch(`/api?q=${encodeURIComponent(query)}&max=${maxResults}`, { signal: AbortSignal.timeout(10000) });
+  // Kirim limit ke Python API (parameter "limit")
+  const res = await fetch(
+    `/api?q=${encodeURIComponent(query)}&limit=${maxResults}`,
+    { signal: AbortSignal.timeout(15000) }
+  );
   if (!res.ok) throw new Error(`API error ${res.status}`);
   const data = await res.json();
-  if (!Array.isArray(data)||data.length===0) throw new Error('Kosong');
-  return data.map(normalizeTrack).filter(t=>t.videoId);
+  // Kalau API return error object
+  if (data && data.error) throw new Error(data.error);
+  if (!Array.isArray(data) || data.length === 0) throw new Error('Kosong');
+  return data.map(normalizeTrack).filter(Boolean);
 }
 
 async function searchQuery(q) {
