@@ -8,437 +8,336 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:       #0c0c10;
-      --surface:  #13131a;
-      --surface2: #1a1a24;
-      --surface3: #21212e;
-      --border:   rgba(255,255,255,0.07);
-      --border2:  rgba(255,255,255,0.12);
-      --accent:   #c9a96e;
-      --accent2:  #e8c896;
-      --accent3:  #8b6f3e;
-      --text:     #f0ede8;
-      --text2:    #a09890;
-      --text3:    #5a5550;
-      --red:      #c96e6e;
-      --radius:   12px;
-      --sidebar-w: 220px;
-      --player-h: 80px;
+      --bg:#0c0c10;--surface:#13131a;--surface2:#1a1a24;--surface3:#21212e;
+      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+      --accent:#c9a96e;--accent2:#e8c896;--accent3:#8b6f3e;
+      --text:#f0ede8;--text2:#a09890;--text3:#5a5550;
+      --red:#c96e6e;--green:#6ec98a;
+      --radius:12px;--sidebar-w:220px;--player-h:80px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; overflow: hidden; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      display: flex;
-      flex-direction: column;
-    }
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 1000; opacity: 0.4;
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;overflow:hidden}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4}
 
     /* LOGIN */
-    #loginScreen {
-      position: fixed; inset: 0; z-index: 900;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-    }
-    #loginScreen.hidden { display: none; }
-    .login-box {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      padding: 48px 40px;
-      width: 380px; max-width: 90vw;
-      text-align: center;
-    }
-    .login-logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
-    .login-logo span { color: var(--text2); font-weight: 400; font-style: italic; font-size: 14px; display: block; margin-top: 2px; }
-    .login-divider { height: 1px; background: var(--border); margin: 24px 0; }
-    .login-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); text-align: left; margin-bottom: 6px; }
-    .login-input {
-      width: 100%; background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 14px;
-      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
-      outline: none; transition: border-color 0.2s; margin-bottom: 14px;
-    }
-    .login-input:focus { border-color: var(--accent); }
-    .login-input::placeholder { color: var(--text3); }
-    .login-btn {
-      width: 100%; padding: 13px;
-      background: var(--accent); color: #0c0c10;
-      border: none; border-radius: 10px;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: all 0.2s; margin-top: 4px;
-    }
-    .login-btn:hover { background: var(--accent2); }
-    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .login-error { color: var(--red); font-size: 12px; margin-top: 10px; min-height: 18px; }
-    .login-note { font-size: 11px; color: var(--text3); margin-top: 16px; }
+    #loginScreen{position:fixed;inset:0;z-index:900;background:var(--bg);display:flex;align-items:center;justify-content:center}
+    #loginScreen.hidden{display:none}
+    .login-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:48px 40px;width:380px;max-width:90vw;text-align:center}
+    .login-logo{font-family:'Playfair Display',serif;font-size:36px;font-weight:800;color:var(--accent);margin-bottom:6px}
+    .login-logo span{color:var(--text2);font-weight:400;font-style:italic;font-size:14px;display:block;margin-top:2px}
+    .login-divider{height:1px;background:var(--border);margin:24px 0}
+    .login-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);text-align:left;margin-bottom:6px}
+    .login-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;margin-bottom:14px}
+    .login-input:focus{border-color:var(--accent)}
+    .login-input::placeholder{color:var(--text3)}
+    .login-btn{width:100%;padding:13px;background:var(--accent);color:#0c0c10;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:4px}
+    .login-btn:hover{background:var(--accent2)}
+    .login-btn:disabled{opacity:0.5;cursor:not-allowed}
+    .login-error{color:var(--red);font-size:12px;margin-top:10px;min-height:18px}
+    .login-note{font-size:11px;color:var(--text3);margin-top:16px}
 
     /* APP LAYOUT */
-    #app { display: flex; flex: 1; height: 100%; overflow: hidden; }
-    #app.hidden { display: none; }
+    #app{display:flex;flex:1;height:100%;overflow:hidden}
+    #app.hidden{display:none}
 
     /* SIDEBAR */
-    .sidebar {
-      width: var(--sidebar-w);
-      min-width: var(--sidebar-w);
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      overflow: hidden;
-      height: 100%;
-    }
-    .logo { padding: 28px 20px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .logo-word { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
-    .logo-sub { font-size: 10px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
-
-    .lang-toggle { display: flex; margin: 14px 20px 0; background: var(--surface2); border-radius: 8px; padding: 3px; gap: 2px; flex-shrink: 0; }
-    .lang-btn { flex: 1; padding: 5px; border: none; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; background: transparent; color: var(--text3); transition: all 0.2s; }
-    .lang-btn.active { background: var(--accent); color: #0c0c10; }
-
-    .sidebar-scroll { flex: 1; overflow-y: auto; padding: 16px 12px; }
-    .sidebar-scroll::-webkit-scrollbar { width: 3px; }
-    .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
-
-    .nav-section { margin-bottom: 20px; }
-    .nav-label { font-size: 9px; font-weight: 600; letter-spacing: 2px; color: var(--text3); text-transform: uppercase; padding: 0 8px; margin-bottom: 4px; }
-    .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 10px; border-radius: 8px;
-      color: var(--text2); font-size: 13px; font-weight: 500;
-      cursor: pointer; transition: all 0.15s;
-      border: none; background: transparent; width: 100%; text-align: left;
-    }
-    .nav-item:hover { color: var(--text); background: var(--surface2); }
-    .nav-item.active { color: var(--accent); background: rgba(201,169,110,0.08); }
-    .nav-item svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+    .sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;height:100%}
+    .logo{padding:28px 20px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+    .logo-word{font-family:'Playfair Display',serif;font-size:26px;font-weight:800;color:var(--accent);letter-spacing:-0.5px}
+    .logo-sub{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+    .lang-toggle{display:flex;margin:14px 20px 0;background:var(--surface2);border-radius:8px;padding:3px;gap:2px;flex-shrink:0}
+    .lang-btn{flex:1;padding:5px;border:none;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;background:transparent;color:var(--text3);transition:all 0.2s}
+    .lang-btn.active{background:var(--accent);color:#0c0c10}
+    .sidebar-scroll{flex:1;overflow-y:auto;padding:16px 12px}
+    .sidebar-scroll::-webkit-scrollbar{width:3px}
+    .sidebar-scroll::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+    .nav-section{margin-bottom:20px}
+    .nav-label{font-size:9px;font-weight:600;letter-spacing:2px;color:var(--text3);text-transform:uppercase;padding:0 8px;margin-bottom:4px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;background:transparent;width:100%;text-align:left}
+    .nav-item:hover{color:var(--text);background:var(--surface2)}
+    .nav-item.active{color:var(--accent);background:rgba(201,169,110,0.08)}
+    .nav-item svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+    .nav-item .heart-icon{color:var(--red)}
 
     /* QUEUE SIDEBAR */
-    .queue-section { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 4px; }
-    .queue-title {
-      font-size: 9px; font-weight: 600; letter-spacing: 2px; color: var(--text3); text-transform: uppercase;
-      padding: 0 8px; margin-bottom: 8px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .queue-count { background: var(--surface3); color: var(--text3); border-radius: 10px; padding: 1px 6px; font-size: 10px; }
-    .queue-list { display: flex; flex-direction: column; gap: 1px; }
-    .queue-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 10px; border-radius: 8px; cursor: pointer;
-      transition: all 0.15s;
-    }
-    .queue-item:hover { background: var(--surface2); }
-    .queue-item.active { background: rgba(201,169,110,0.1); }
-    .queue-thumb { width: 32px; height: 32px; border-radius: 5px; object-fit: cover; flex-shrink: 0; background: var(--surface3); }
-    .queue-info { flex: 1; min-width: 0; }
-    .queue-name { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .queue-artist { font-size: 10px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .queue-playing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: pulse 1.2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-
-    .sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
-    .user-info { display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--accent2); flex-shrink: 0; }
-    .user-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .logout-btn { background: none; border: none; color: var(--text3); cursor: pointer; padding: 4px; border-radius: 6px; transition: color 0.2s; display: flex; }
-    .logout-btn:hover { color: var(--red); }
-    .logout-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .queue-section{border-top:1px solid var(--border);padding-top:14px;margin-top:4px}
+    .queue-title{font-size:9px;font-weight:600;letter-spacing:2px;color:var(--text3);text-transform:uppercase;padding:0 8px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+    .queue-count{background:var(--surface3);color:var(--text3);border-radius:10px;padding:1px 6px;font-size:10px}
+    .queue-list{display:flex;flex-direction:column;gap:1px}
+    .queue-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s}
+    .queue-item:hover{background:var(--surface2)}
+    .queue-item.active{background:rgba(201,169,110,0.1)}
+    .queue-thumb{width:32px;height:32px;border-radius:5px;object-fit:cover;flex-shrink:0;background:var(--surface3)}
+    .queue-info{flex:1;min-width:0}
+    .queue-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .queue-artist{font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .queue-playing-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:pulse 1.2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+    .sidebar-footer{padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0}
+    .user-info{display:flex;align-items:center;gap:10px}
+    .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--accent2);flex-shrink:0}
+    .user-name{font-size:13px;font-weight:500;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .logout-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;transition:color 0.2s;display:flex}
+    .logout-btn:hover{color:var(--red)}
+    .logout-btn svg{width:16px;height:16px;fill:currentColor}
 
     /* MAIN */
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-    .topbar {
-      display: flex; align-items: center; gap: 12px;
-      padding: 16px 24px;
-      background: rgba(12,12,16,0.8); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0; z-index: 10;
-    }
-    .search-wrap { flex: 1; max-width: 400px; position: relative; }
-    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; fill: var(--text3); }
-    .search-input {
-      width: 100%; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 8px;
-      padding: 10px 14px 10px 36px; color: var(--text);
-      font-family: 'DM Sans', sans-serif; font-size: 13px;
-      outline: none; transition: border-color 0.2s;
-    }
-    .search-input:focus { border-color: var(--accent); }
-    .search-input::placeholder { color: var(--text3); }
-    .topbar-right { margin-left: auto; display: flex; gap: 8px; }
-    .btn-donate { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border2); background: transparent; color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-donate:hover { border-color: var(--accent); color: var(--accent); }
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+    .topbar{display:flex;align-items:center;gap:12px;padding:16px 24px;background:rgba(12,12,16,0.8);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10;position:relative}
+    .search-wrap{flex:1;max-width:400px;position:relative}
+    .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;fill:var(--text3)}
+    .search-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px 10px 36px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s}
+    .search-input:focus{border-color:var(--accent)}
+    .search-input::placeholder{color:var(--text3)}
+
+    /* SEARCH AUTOCOMPLETE DROPDOWN */
+    .search-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--surface);border:1px solid var(--border2);border-radius:10px;overflow:hidden;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,0.5);display:none}
+    .search-dropdown.show{display:block}
+    .sd-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background 0.15s;font-size:13px;color:var(--text2)}
+    .sd-item:hover{background:var(--surface2);color:var(--text)}
+    .sd-item svg{width:14px;height:14px;fill:var(--text3);flex-shrink:0}
+    .sd-item .sd-highlight{color:var(--accent)}
+
+    .topbar-right{margin-left:auto;display:flex;gap:8px}
+    .btn-donate{padding:8px 16px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s}
+    .btn-donate:hover{border-color:var(--accent);color:var(--accent)}
 
     /* CONTENT */
-    .content-wrap { flex: 1; overflow-y: auto; }
-    .content-wrap::-webkit-scrollbar { width: 4px; }
-    .content-wrap::-webkit-scrollbar-track { background: transparent; }
-    .content-wrap::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
-    .content { padding: 24px; padding-bottom: calc(var(--player-h) + 24px); }
+    .content-wrap{flex:1;overflow-y:auto}
+    .content-wrap::-webkit-scrollbar{width:4px}
+    .content-wrap::-webkit-scrollbar-track{background:transparent}
+    .content-wrap::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
+    .content{padding:24px;padding-bottom:calc(var(--player-h) + 24px)}
 
-    /* SEARCH LAYOUT: track list + mini playlist panel */
-    .search-layout {
-      display: grid;
-      grid-template-columns: 1fr 260px;
-      gap: 20px;
-      align-items: start;
-    }
-    @media (max-width: 900px) {
-      .search-layout { grid-template-columns: 1fr; }
-      .search-playlist-panel { display: none; }
-    }
+    /* SEARCH LAYOUT */
+    .search-layout{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    @media(max-width:900px){.search-layout{grid-template-columns:1fr}.search-playlist-panel{display:none}}
+    .search-playlist-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:sticky;top:0}
+    .spp-header{padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .spp-title{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
+    .spp-count{font-size:11px;color:var(--accent);font-family:'DM Mono',monospace;font-weight:600}
+    .spp-list{max-height:480px;overflow-y:auto;padding:6px}
+    .spp-list::-webkit-scrollbar{width:3px}
+    .spp-list::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+    .spp-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative}
+    .spp-item:hover{background:var(--surface2)}
+    .spp-item.active{background:rgba(201,169,110,0.1)}
+    .spp-num{width:20px;text-align:center;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;flex-shrink:0}
+    .spp-num.active-icon{color:var(--accent)}
+    .spp-thumb{width:36px;height:36px;border-radius:5px;object-fit:cover;background:var(--surface3);flex-shrink:0}
+    .spp-info{flex:1;min-width:0}
+    .spp-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .spp-artist{font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .spp-playing-bar{display:flex;align-items:flex-end;gap:2px;height:14px;flex-shrink:0}
+    .spp-playing-bar span{display:block;width:3px;background:var(--accent);border-radius:1px;animation:bar-bounce 0.8s ease-in-out infinite}
+    .spp-playing-bar span:nth-child(2){animation-delay:0.15s}
+    .spp-playing-bar span:nth-child(3){animation-delay:0.3s}
+    @keyframes bar-bounce{0%,100%{height:4px}50%{height:14px}}
 
-    /* Inline playlist panel (right side of search) */
-    .search-playlist-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      position: sticky;
-      top: 0;
-    }
-    .spp-header {
-      padding: 14px 16px 12px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .spp-title { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); }
-    .spp-count { font-size: 11px; color: var(--accent); font-family: 'DM Mono', monospace; font-weight: 600; }
-    .spp-list { max-height: 480px; overflow-y: auto; padding: 6px; }
-    .spp-list::-webkit-scrollbar { width: 3px; }
-    .spp-list::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
-    .spp-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px; border-radius: 8px; cursor: pointer;
-      transition: all 0.15s; position: relative;
-    }
-    .spp-item:hover { background: var(--surface2); }
-    .spp-item.active { background: rgba(201,169,110,0.1); }
-    .spp-num { width: 20px; text-align: center; font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; flex-shrink: 0; }
-    .spp-num.active-icon { color: var(--accent); }
-    .spp-thumb { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; background: var(--surface3); flex-shrink: 0; }
-    .spp-info { flex: 1; min-width: 0; }
-    .spp-name { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .spp-artist { font-size: 10px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .spp-playing-bar {
-      display: flex; align-items: flex-end; gap: 2px; height: 14px; flex-shrink: 0;
-    }
-    .spp-playing-bar span {
-      display: block; width: 3px; background: var(--accent); border-radius: 1px;
-      animation: bar-bounce 0.8s ease-in-out infinite;
-    }
-    .spp-playing-bar span:nth-child(2) { animation-delay: 0.15s; }
-    .spp-playing-bar span:nth-child(3) { animation-delay: 0.3s; }
-    @keyframes bar-bounce { 0%,100%{height:4px} 50%{height:14px} }
+    /* LIKED PLAYLIST PAGE */
+    #likedContent{display:none}
+    #likedContent.show{display:block}
+    .liked-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:20px;background:linear-gradient(135deg,rgba(201,110,110,0.1) 0%,rgba(201,169,110,0.05) 100%);border:1px solid var(--border);border-radius:16px}
+    .liked-icon{font-size:48px}
+    .liked-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text)}
+    .liked-count{font-size:13px;color:var(--text3);margin-top:2px}
+    .liked-actions{display:flex;gap:8px;margin-top:10px}
+    .liked-reorder-hint{font-size:11px;color:var(--text3);padding:8px 12px;background:var(--surface2);border-radius:8px;margin-bottom:12px}
+
+    /* DRAG-REORDER */
+    .track-item.dragging{opacity:0.4;background:var(--surface2)}
+    .track-item.drag-over{border-top:2px solid var(--accent)}
 
     /* DETAIL PANEL */
-    .detail-panel {
-      position: fixed; right: 0; top: 0; bottom: var(--player-h);
-      width: 320px; background: var(--surface);
-      border-left: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-      z-index: 50;
-    }
-    .detail-panel.open { transform: translateX(0); }
-    .detail-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-    .detail-close { background: none; border: none; color: var(--text3); cursor: pointer; padding: 4px; border-radius: 6px; transition: color 0.2s; display: flex; margin-left: auto; }
-    .detail-close:hover { color: var(--text); }
-    .detail-close svg { width: 18px; height: 18px; fill: currentColor; }
-    .detail-scroll { flex: 1; overflow-y: auto; padding: 20px; }
-    .detail-scroll::-webkit-scrollbar { width: 3px; }
-    .detail-scroll::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
-    .detail-art { width: 100%; aspect-ratio: 1; border-radius: 12px; object-fit: cover; background: var(--surface2); margin-bottom: 16px; }
-    .detail-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-    .detail-artist { font-size: 13px; color: var(--accent); cursor: pointer; transition: color 0.2s; display: inline; }
-    .detail-artist:hover { color: var(--accent2); text-decoration: underline; }
-    .detail-actions { display: flex; gap: 8px; margin: 16px 0; }
-    .detail-action-btn {
-      flex: 1; padding: 9px 14px; border-radius: 8px; border: none;
-      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
-      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
-    .detail-action-btn.primary { background: var(--accent); color: #0c0c10; }
-    .detail-action-btn.primary:hover { background: var(--accent2); }
-    .detail-action-btn.secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
-    .detail-action-btn.secondary:hover { border-color: var(--border2); color: var(--text); }
-    .detail-action-btn svg { width: 14px; height: 14px; fill: currentColor; }
-    .detail-section-title { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; margin-top: 20px; }
-    .detail-lyrics { font-size: 13px; color: var(--text2); line-height: 1.8; background: var(--surface2); border-radius: 10px; padding: 14px; font-style: italic; max-height: 260px; overflow-y: auto; }
-    .detail-lyrics::-webkit-scrollbar { width: 3px; }
-    .detail-lyrics::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
-    .lyric-loading { color: var(--text3); font-size: 12px; }
-    .similar-list { display: flex; flex-direction: column; gap: 4px; }
-    .similar-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
-    .similar-item:hover { background: var(--surface2); }
-    .similar-thumb { width: 38px; height: 38px; border-radius: 6px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
-    .similar-info { flex: 1; min-width: 0; }
-    .similar-title { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .similar-artist { font-size: 11px; color: var(--text3); }
+    .detail-panel{position:fixed;right:0;top:0;bottom:var(--player-h);width:340px;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);z-index:50}
+    .detail-panel.open{transform:translateX(0)}
+    .detail-header{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .detail-close{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;transition:color 0.2s;display:flex;margin-left:auto}
+    .detail-close:hover{color:var(--text)}
+    .detail-close svg{width:18px;height:18px;fill:currentColor}
+    .detail-scroll{flex:1;overflow-y:auto;padding:20px}
+    .detail-scroll::-webkit-scrollbar{width:3px}
+    .detail-scroll::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+    .detail-art{width:100%;aspect-ratio:1;border-radius:12px;object-fit:cover;background:var(--surface2);margin-bottom:16px}
+    .detail-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
+    .detail-artist{font-size:13px;color:var(--accent);cursor:pointer;transition:color 0.2s;display:inline}
+    .detail-artist:hover{color:var(--accent2);text-decoration:underline}
+    .detail-actions{display:flex;gap:8px;margin:16px 0}
+    .detail-action-btn{flex:1;padding:9px 14px;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+    .detail-action-btn.primary{background:var(--accent);color:#0c0c10}
+    .detail-action-btn.primary:hover{background:var(--accent2)}
+    .detail-action-btn.secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+    .detail-action-btn.secondary:hover{border-color:var(--border2);color:var(--text)}
+    .detail-action-btn.like-btn{background:rgba(201,110,110,0.1);color:var(--red);border:1px solid rgba(201,110,110,0.2)}
+    .detail-action-btn.like-btn.liked{background:var(--red);color:#fff}
+    .detail-action-btn.dl-btn{background:rgba(110,201,138,0.1);color:var(--green);border:1px solid rgba(110,201,138,0.2)}
+    .detail-action-btn.dl-btn:hover{background:rgba(110,201,138,0.2)}
+    .detail-action-btn svg{width:14px;height:14px;fill:currentColor}
+    .detail-section-title{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;margin-top:20px}
+
+    /* REAL-TIME LYRICS */
+    .detail-lyrics{font-size:13px;color:var(--text2);line-height:1.9;background:var(--surface2);border-radius:10px;padding:14px;max-height:360px;overflow-y:auto}
+    .detail-lyrics::-webkit-scrollbar{width:3px}
+    .detail-lyrics::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+    .lyric-line{display:block;padding:3px 6px;border-radius:6px;transition:all 0.3s;cursor:pointer;font-style:italic}
+    .lyric-line.active{background:rgba(201,169,110,0.15);color:var(--accent2);font-style:normal;font-weight:500}
+    .lyric-line.passed{color:var(--text3);font-style:italic}
+    .lyric-loading{color:var(--text3);font-size:12px;font-style:normal}
+
+    .similar-list{display:flex;flex-direction:column;gap:4px}
+    .similar-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:all 0.15s}
+    .similar-item:hover{background:var(--surface2)}
+    .similar-thumb{width:38px;height:38px;border-radius:6px;object-fit:cover;background:var(--surface2);flex-shrink:0}
+    .similar-info{flex:1;min-width:0}
+    .similar-title{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .similar-artist{font-size:11px;color:var(--text3)}
+
+    /* DOWNLOAD PROGRESS */
+    .dl-progress{margin-top:8px;display:none}
+    .dl-progress.show{display:block}
+    .dl-bar{height:4px;background:var(--surface3);border-radius:4px;overflow:hidden;margin-bottom:4px}
+    .dl-bar-fill{height:100%;background:var(--green);border-radius:4px;transition:width 0.3s;width:0%}
+    .dl-status{font-size:11px;color:var(--text3)}
 
     /* HERO */
-    .hero {
-      background: linear-gradient(145deg, var(--surface2) 0%, rgba(201,169,110,0.06) 100%);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 36px; margin-bottom: 32px;
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; top: 0; right: 0;
-      width: 300px; height: 100%;
-      background: radial-gradient(ellipse at right center, rgba(201,169,110,0.08), transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
-    .hero h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 800; line-height: 1.1; letter-spacing: -1px; margin-bottom: 10px; color: var(--text); }
-    .hero h1 em { color: var(--accent); font-style: italic; }
-    .hero p { color: var(--text2); font-size: 14px; margin-bottom: 24px; max-width: 480px; line-height: 1.6; }
-    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-primary { display: flex; align-items: center; gap: 7px; padding: 11px 22px; border-radius: 8px; border: none; background: var(--accent); color: #0c0c10; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-primary:hover { background: var(--accent2); }
-    .btn-primary svg { width: 14px; height: 14px; fill: currentColor; }
-    .btn-secondary { display: flex; align-items: center; gap: 7px; padding: 11px 22px; border-radius: 8px; border: 1px solid var(--border2); background: transparent; color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* SECTIONS */
-    .section { margin-bottom: 32px; }
-    .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); }
-    .section-sub { font-size: 11px; color: var(--text3); margin-left: 8px; }
-    .show-all { font-size: 11px; font-weight: 500; color: var(--text3); cursor: pointer; transition: color 0.2s; letter-spacing: 0.5px; }
-    .show-all:hover { color: var(--accent); }
-
-    /* CARDS */
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
-    .card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px; cursor: pointer;
-      transition: all 0.2s; position: relative; overflow: hidden;
-    }
-    .card:hover { border-color: var(--border2); transform: translateY(-2px); }
-    .card:hover .card-play { opacity: 1; transform: translateY(0); }
-    .card-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: var(--surface3); display: block; }
-    .card-img.skeleton { background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-    .skel-line { height: 12px; border-radius: 4px; margin-bottom: 6px; animation: shimmer 1.5s infinite; background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%); background-size: 200% 100%; }
-    .card-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .card-sub { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .card-play { position: absolute; bottom: 44px; right: 12px; width: 34px; height: 34px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(6px); transition: all 0.2s; box-shadow: 0 4px 16px rgba(201,169,110,0.3); }
-    .card-play svg { fill: #0c0c10; width: 14px; height: 14px; margin-left: 2px; }
-
-    /* CHART */
-    .chart-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-    .chart-tile { padding: 20px; border-radius: var(--radius); cursor: pointer; transition: transform 0.2s; position: relative; overflow: hidden; border: 1px solid transparent; }
-    .chart-tile:hover { transform: translateY(-2px); }
-    .chart-tile.t1 { background: linear-gradient(135deg, #1a1608 0%, #2d2410 100%); border-color: rgba(201,169,110,0.15); }
-    .chart-tile.t2 { background: linear-gradient(135deg, #0f1a14 0%, #162412 100%); border-color: rgba(80,160,100,0.12); }
-    .chart-tile.t3 { background: linear-gradient(135deg, #160f1a 0%, #231524 100%); border-color: rgba(150,80,180,0.12); }
-    .chart-tile.t4 { background: linear-gradient(135deg, #0f1420 0%, #121e30 100%); border-color: rgba(80,120,200,0.12); }
-    .chart-tile h3 { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .chart-tile p { font-size: 11px; color: var(--text3); }
-    .chart-tile-num { position: absolute; bottom: 10px; right: 14px; font-size: 36px; opacity: 0.12; font-family: 'DM Mono', monospace; }
+    .hero{background:linear-gradient(145deg,var(--surface2) 0%,rgba(201,169,110,0.06) 100%);border:1px solid var(--border);border-radius:16px;padding:36px;margin-bottom:32px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(ellipse at right center,rgba(201,169,110,0.08),transparent 70%);pointer-events:none}
+    .hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .hero h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:10px;color:var(--text)}
+    .hero h1 em{color:var(--accent);font-style:italic}
+    .hero p{color:var(--text2);font-size:14px;margin-bottom:24px;max-width:480px;line-height:1.6}
+    .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-primary{display:flex;align-items:center;gap:7px;padding:11px 22px;border-radius:8px;border:none;background:var(--accent);color:#0c0c10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+    .btn-primary:hover{background:var(--accent2)}
+    .btn-primary svg{width:14px;height:14px;fill:currentColor}
+    .btn-secondary{display:flex;align-items:center;gap:7px;padding:11px 22px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
+    .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+    .section{margin-bottom:32px}
+    .section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+    .section-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text)}
+    .section-sub{font-size:11px;color:var(--text3);margin-left:8px}
+    .show-all{font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;transition:color 0.2s;letter-spacing:0.5px}
+    .show-all:hover{color:var(--accent)}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px}
+    .card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+    .card:hover{border-color:var(--border2);transform:translateY(-2px)}
+    .card:hover .card-play{opacity:1;transform:translateY(0)}
+    .card-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;margin-bottom:10px;background:var(--surface3);display:block}
+    .card-img.skeleton{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .skel-line{height:12px;border-radius:4px;margin-bottom:6px;animation:shimmer 1.5s infinite;background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%}
+    .card-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .card-sub{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .card-play{position:absolute;bottom:44px;right:12px;width:34px;height:34px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(6px);transition:all 0.2s;box-shadow:0 4px 16px rgba(201,169,110,0.3)}
+    .card-play svg{fill:#0c0c10;width:14px;height:14px;margin-left:2px}
+    .chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+    .chart-tile{padding:20px;border-radius:var(--radius);cursor:pointer;transition:transform 0.2s;position:relative;overflow:hidden;border:1px solid transparent}
+    .chart-tile:hover{transform:translateY(-2px)}
+    .chart-tile.t1{background:linear-gradient(135deg,#1a1608 0%,#2d2410 100%);border-color:rgba(201,169,110,0.15)}
+    .chart-tile.t2{background:linear-gradient(135deg,#0f1a14 0%,#162412 100%);border-color:rgba(80,160,100,0.12)}
+    .chart-tile.t3{background:linear-gradient(135deg,#160f1a 0%,#231524 100%);border-color:rgba(150,80,180,0.12)}
+    .chart-tile.t4{background:linear-gradient(135deg,#0f1420 0%,#121e30 100%);border-color:rgba(80,120,200,0.12)}
+    .chart-tile h3{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:4px}
+    .chart-tile p{font-size:11px;color:var(--text3)}
+    .chart-tile-num{position:absolute;bottom:10px;right:14px;font-size:36px;opacity:0.12;font-family:'DM Mono',monospace}
 
     /* TRACK LIST */
-    #searchResults { display: none; }
-    #searchResults.show { display: block; }
-    #homeContent.hide { display: none; }
-    .track-list { display: flex; flex-direction: column; gap: 2px; }
-    .track-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
-    .track-item:hover { background: var(--surface2); }
-    .track-item.playing { background: rgba(201,169,110,0.07); }
-    .track-num { width: 24px; text-align: center; font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; flex-shrink: 0; }
-    .track-num.playing-icon { color: var(--accent); }
-    .track-thumb { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
-    .track-info { flex: 1; min-width: 0; }
-    .track-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .track-artist { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .track-info-btn { background: none; border: none; color: var(--text3); cursor: pointer; padding: 4px; border-radius: 6px; transition: color 0.2s; display: flex; opacity: 0; }
-    .track-item:hover .track-info-btn { opacity: 1; }
-    .track-info-btn:hover { color: var(--accent); }
-    .track-info-btn svg { width: 15px; height: 15px; fill: currentColor; }
+    #searchResults{display:none}
+    #searchResults.show{display:block}
+    #homeContent.hide{display:none}
+    .track-list{display:flex;flex-direction:column;gap:2px}
+    .track-item{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:all 0.15s;user-select:none}
+    .track-item:hover{background:var(--surface2)}
+    .track-item.playing{background:rgba(201,169,110,0.07)}
+    .track-num{width:24px;text-align:center;font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;flex-shrink:0}
+    .track-num.playing-icon{color:var(--accent)}
+    .track-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--surface2);flex-shrink:0}
+    .track-info{flex:1;min-width:0}
+    .track-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .track-artist{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .track-btns{display:flex;gap:4px;align-items:center}
+    .track-info-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;transition:color 0.2s;display:flex;opacity:0}
+    .track-item:hover .track-info-btn{opacity:1}
+    .track-info-btn:hover{color:var(--accent)}
+    .track-info-btn svg{width:15px;height:15px;fill:currentColor}
+    .track-like-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;border-radius:6px;transition:color 0.2s;display:flex;opacity:0}
+    .track-item:hover .track-like-btn{opacity:1}
+    .track-like-btn:hover{color:var(--red)}
+    .track-like-btn.liked{color:var(--red);opacity:1}
+    .track-like-btn svg{width:15px;height:15px;fill:currentColor}
 
     /* PLAYER BAR */
-    .player-bar {
-      height: var(--player-h);
-      background: rgba(19,19,26,0.97);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border);
-      display: none; align-items: center;
-      padding: 0 24px; gap: 20px; flex-shrink: 0;
-      z-index: 40;
-    }
-    .player-bar.show { display: flex; }
-    .player-info { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; cursor: pointer; }
-    .player-thumb { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; background: var(--surface2); flex-shrink: 0; }
-    .player-text { min-width: 0; }
-    .player-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
-    .player-artist { font-size: 11px; color: var(--text3); }
-    .player-center { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 2; }
-    .player-controls { display: flex; align-items: center; gap: 10px; }
-    .ctrl-btn { background: none; border: none; color: var(--text3); cursor: pointer; padding: 6px; border-radius: 50%; transition: all 0.2s; display: flex; align-items: center; }
-    .ctrl-btn:hover { color: var(--text); }
-    .ctrl-btn.on { color: var(--accent); }
-    .ctrl-btn svg { fill: currentColor; width: 18px; height: 18px; }
-    .play-pause-btn { width: 40px; height: 40px; background: var(--accent); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
-    .play-pause-btn:hover { background: var(--accent2); transform: scale(1.05); }
-    .play-pause-btn svg { fill: #0c0c10; width: 18px; height: 18px; }
-    .player-progress { display: flex; align-items: center; gap: 8px; width: 100%; }
-    .time-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; min-width: 30px; text-align: center; }
-    .progress-bar { flex: 1; height: 3px; background: var(--surface3); border-radius: 3px; cursor: pointer; position: relative; }
-    .progress-bar:hover { height: 5px; }
-    .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width 0.8s linear; }
-    .progress-bar:hover .progress-fill { background: var(--accent2); }
+    .player-bar{height:var(--player-h);background:rgba(19,19,26,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:none;align-items:center;padding:0 24px;gap:20px;flex-shrink:0;z-index:40}
+    .player-bar.show{display:flex}
+    .player-info{display:flex;align-items:center;gap:12px;min-width:0;flex:1;cursor:pointer}
+    .player-thumb{width:46px;height:46px;border-radius:8px;object-fit:cover;background:var(--surface2);flex-shrink:0}
+    .player-text{min-width:0}
+    .player-title{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+    .player-artist{font-size:11px;color:var(--text3)}
+    .player-like{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;display:flex;transition:color 0.2s}
+    .player-like:hover{color:var(--red)}
+    .player-like.liked{color:var(--red)}
+    .player-like svg{width:18px;height:18px;fill:currentColor}
+    .player-center{display:flex;flex-direction:column;align-items:center;gap:8px;flex:2}
+    .player-controls{display:flex;align-items:center;gap:10px}
+    .ctrl-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px;border-radius:50%;transition:all 0.2s;display:flex;align-items:center}
+    .ctrl-btn:hover{color:var(--text)}
+    .ctrl-btn.on{color:var(--accent)}
+    .ctrl-btn svg{fill:currentColor;width:18px;height:18px}
+    .play-pause-btn{width:40px;height:40px;background:var(--accent);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+    .play-pause-btn:hover{background:var(--accent2);transform:scale(1.05)}
+    .play-pause-btn svg{fill:#0c0c10;width:18px;height:18px}
+    .player-progress{display:flex;align-items:center;gap:8px;width:100%}
+    .time-label{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;min-width:30px;text-align:center}
+    .progress-bar{flex:1;height:3px;background:var(--surface3);border-radius:3px;cursor:pointer;position:relative}
+    .progress-bar:hover{height:5px}
+    .progress-fill{height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width 0.8s linear}
+    .progress-bar:hover .progress-fill{background:var(--accent2)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:calc(var(--player-h) + 16px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:10px 18px;font-size:12px;color:var(--text);opacity:0;transition:all 0.3s;z-index:500;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
     /* DONATE MODAL */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); z-index: 800; display: none; align-items: center; justify-content: center; }
-    .modal-overlay.show { display: flex; }
-    .modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 36px 32px; max-width: 340px; width: 90%; text-align: center; position: relative; }
-    .modal-close { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; line-height: 1; }
-    .modal-close:hover { color: var(--text); }
-    .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
-    .modal-sub { font-size: 13px; color: var(--text3); margin-bottom: 20px; }
-    .qr-box { width: 200px; height: 200px; margin: 0 auto 14px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .qr-box img { width: 100%; height: 100%; object-fit: contain; }
-    .qr-note { font-size: 12px; color: var(--text3); }
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);z-index:800;display:none;align-items:center;justify-content:center}
+    .modal-overlay.show{display:flex}
+    .modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:36px 32px;max-width:340px;width:90%;text-align:center;position:relative}
+    .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1}
+    .modal-close:hover{color:var(--text)}
+    .modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px}
+    .modal-sub{font-size:13px;color:var(--text3);margin-bottom:20px}
+    .qr-box{width:200px;height:200px;margin:0 auto 14px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .qr-box img{width:100%;height:100%;object-fit:contain}
+    .qr-note{font-size:12px;color:var(--text3)}
+    .error-msg{background:rgba(201,110,110,0.1);border:1px solid rgba(201,110,110,0.2);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--red);margin-bottom:14px;display:none}
+    .error-msg.show{display:block}
+    .loading-text{text-align:center;color:var(--text3);font-size:13px;padding:32px 0;display:none}
+    .loading-text.show{display:block}
+    .loading-dots::after{content:'';animation:dots 1.5s infinite}
+    @keyframes dots{0%{content:'.'}33%{content:'..'}66%{content:'...'}}
+    #yt-container{position:fixed;bottom:-9999px;opacity:0;pointer-events:none}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
 
-    /* MISC */
-    .error-msg { background: rgba(201,110,110,0.1); border: 1px solid rgba(201,110,110,0.2); border-radius: 10px; padding: 12px 16px; font-size: 13px; color: var(--red); margin-bottom: 14px; display: none; }
-    .error-msg.show { display: block; }
-    .loading-text { text-align: center; color: var(--text3); font-size: 13px; padding: 32px 0; display: none; }
-    .loading-text.show { display: block; }
-    .loading-dots::after { content: ''; animation: dots 1.5s infinite; }
-    @keyframes dots { 0%{content:'.'} 33%{content:'..'} 66%{content:'...'} }
-    #yt-container { position: fixed; bottom: -9999px; opacity: 0; pointer-events: none; }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
-
-    @media (max-width: 700px) {
-      :root { --sidebar-w: 0px; }
-      .sidebar { display: none; }
-      .content { padding: 14px; }
-      .hero { padding: 22px; }
-      .hero h1 { font-size: 26px; }
-      .card-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
-      .player-center { flex: 1; }
-      .player-progress { display: none; }
-      .player-info .player-title { max-width: 120px; }
-      .detail-panel { width: 100%; }
-      .topbar { padding: 12px 14px; }
-      .player-bar { padding: 0 14px; gap: 12px; }
-      .search-layout { grid-template-columns: 1fr; }
+    @media(max-width:700px){
+      :root{--sidebar-w:0px}
+      .sidebar{display:none}
+      .content{padding:14px}
+      .hero{padding:22px}
+      .hero h1{font-size:26px}
+      .card-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+      .player-center{flex:1}
+      .player-progress{display:none}
+      .player-info .player-title{max-width:120px}
+      .detail-panel{width:100%}
+      .topbar{padding:12px 14px}
+      .player-bar{padding:0 14px;gap:12px}
     }
-    @media (min-width: 701px) and (max-width: 900px) {
-      :root { --sidebar-w: 180px; }
-      .search-layout { grid-template-columns: 1fr; }
+    @media(min-width:701px) and (max-width:900px){
+      :root{--sidebar-w:180px}
+      .search-layout{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -477,6 +376,11 @@
           <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
           <span data-su="Imah" data-id="Beranda">Imah</span>
         </button>
+        <button class="nav-item" id="navLiked" onclick="showLiked()">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span data-su="Disuka" data-id="Disukai">Disuka</span>
+          <span id="likedBadge" style="margin-left:auto;background:rgba(201,110,110,0.2);color:var(--red);border-radius:10px;padding:1px 7px;font-size:10px;display:none">0</span>
+        </button>
         <button class="nav-item" onclick="focusSearch()">
           <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
           <span data-su="Néangan" data-id="Cari">Néangan</span>
@@ -492,7 +396,6 @@
         <button class="nav-item" onclick="searchQuery('lagu India populer 2024')">🎵 Lagu India</button>
         <button class="nav-item" onclick="searchQuery('campursari Jawa populer')">🌺 Campursari Jawa</button>
       </div>
-      <!-- Sidebar queue (always visible when there's a queue, as before) -->
       <div class="queue-section" id="queueSection" style="display:none">
         <div class="queue-title">
           <span data-su="Antrian" data-id="Antrian Putar">Antrian</span>
@@ -514,9 +417,10 @@
 
   <div class="main">
     <div class="topbar">
-      <div class="search-wrap">
+      <div class="search-wrap" id="searchWrap">
         <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input class="search-input" id="searchInput" type="text" placeholder="Néangan kawih Sunda...">
+        <input class="search-input" id="searchInput" type="text" placeholder="Néangan kawih Sunda..." autocomplete="off">
+        <div class="search-dropdown" id="searchDropdown"></div>
       </div>
       <div class="topbar-right">
         <button class="btn-donate" onclick="openDonate()">☕ Donasi</button>
@@ -528,7 +432,7 @@
         <div class="error-msg" id="errorMsg"></div>
         <div class="loading-text" id="loadingText"><span class="loading-dots">Milarian</span></div>
 
-        <!-- Search Results: 2-column layout (tracklist + inline playlist) -->
+        <!-- Search Results -->
         <div id="searchResults">
           <div class="section-header" style="margin-bottom:16px">
             <div>
@@ -541,11 +445,9 @@
             </button>
           </div>
           <div class="search-layout">
-            <!-- Track list (left) -->
             <div>
               <div class="track-list" id="trackList"></div>
             </div>
-            <!-- Inline playlist panel (right) -->
             <div class="search-playlist-panel" id="searchPlaylistPanel">
               <div class="spp-header">
                 <span class="spp-title">Playlist</span>
@@ -556,52 +458,64 @@
           </div>
         </div>
 
+        <!-- Liked / Suka Page -->
+        <div id="likedContent">
+          <div class="liked-header">
+            <div class="liked-icon">❤️</div>
+            <div>
+              <div class="liked-title" data-su="Kawih Disuka" data-id="Lagu Disukai">Kawih Disuka</div>
+              <div class="liked-count" id="likedCount">0 lagu</div>
+              <div class="liked-actions">
+                <button class="btn-primary" onclick="playAllLiked()" style="font-size:12px;padding:8px 16px">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  Putar Semua
+                </button>
+                <button class="btn-secondary" onclick="clearAllLiked()" style="font-size:12px;padding:8px 16px;color:var(--red);border-color:rgba(201,110,110,0.3)">
+                  Hapus Semua
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="liked-reorder-hint">💡 Seret lagu untuk mengubah urutan</div>
+          <div class="track-list" id="likedTrackList"></div>
+        </div>
+
         <!-- Home -->
         <div id="homeContent">
           <div class="hero">
-            <div class="hero-eyebrow" data-su="Musik Sunda Pangalusna" data-id="Musik Sunda Terbaik">Musik Sunda Pangalusna</div>
-            <h1><em data-su="Kawih" data-id="Lagu">Kawih</em> <span data-su="Sunda Urang" data-id="Sunda Kita">Sunda Urang</span></h1>
-            <p data-su="Dengekeun kawih Sunda nu pangalusna — ti jaman baheula nepi ka kiwari." data-id="Dengarkan lagu Sunda terbaik — dari zaman dulu hingga sekarang.">
-              Dengekeun kawih Sunda nu pangalusna — ti jaman baheula nepi ka kiwari.
-            </p>
+            <div class="hero-eyebrow">Musik Sunda Pangalusna</div>
+            <h1><em>Kawih</em> <span>Sunda Urang</span></h1>
+            <p>Dengekeun kawih Sunda nu pangalusna — ti jaman baheula nepi ka kiwari.</p>
             <div class="hero-btns">
               <button class="btn-primary" onclick="searchQuery('kawih Sunda populer 2024')">
                 <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                <span data-su="Putar Ayeuna" data-id="Putar Sekarang">Putar Ayeuna</span>
+                Putar Ayeuna
               </button>
-              <button class="btn-secondary" onclick="searchQuery('tembang Sunda')">
-                <span data-su="Jajah Kawih" data-id="Jelajah Lagu">Jajah Kawih</span>
-              </button>
+              <button class="btn-secondary" onclick="searchQuery('tembang Sunda')">Jajah Kawih</button>
             </div>
           </div>
           <div class="section">
             <div class="section-header">
-              <div class="section-title" data-su="Kawih Keur Trend" data-id="Sedang Tren">Kawih Keur Trend</div>
-              <a class="show-all" onclick="searchQuery('kawih Sunda viral 2024')" data-su="Tingali Sadayana" data-id="Lihat Semua">Tingali Sadayana →</a>
+              <div class="section-title">Kawih Keur Trend</div>
+              <a class="show-all" onclick="searchQuery('kawih Sunda viral 2024')">Tingali Sadayana →</a>
             </div>
             <div class="card-grid" id="trendingGrid"></div>
           </div>
           <div class="section">
-            <div class="section-header">
-              <div class="section-title" data-su="Artis Populér" data-id="Artis Populer">Artis Populér</div>
-            </div>
+            <div class="section-header"><div class="section-title">Artis Populér</div></div>
             <div class="card-grid" id="artistsGrid"></div>
           </div>
           <div class="section">
-            <div class="section-header">
-              <div class="section-title">Chart Musik</div>
-            </div>
+            <div class="section-header"><div class="section-title">Chart Musik</div></div>
             <div class="chart-grid">
-              <div class="chart-tile t1" onclick="searchQuery('top kawih Sunda 2024')"><h3 data-su="Top Kawih" data-id="Top Lagu">Top Kawih</h3><p data-su="Mingguan" data-id="Mingguan">Mingguan</p><div class="chart-tile-num">50</div></div>
+              <div class="chart-tile t1" onclick="searchQuery('top kawih Sunda 2024')"><h3>Top Kawih</h3><p>Mingguan</p><div class="chart-tile-num">50</div></div>
               <div class="chart-tile t2" onclick="searchQuery('degung Sunda populer')"><h3>Top Degung</h3><p>Kacapi Suling</p><div class="chart-tile-num">♪</div></div>
-              <div class="chart-tile t3" onclick="searchQuery('jaipong terpopuler 2024')"><h3>Viral Jaipong</h3><p data-su="Sapopoé" data-id="Harian">Sapopoé</p><div class="chart-tile-num">🔥</div></div>
-              <div class="chart-tile t4" onclick="searchQuery('pop Sunda modern 2024')"><h3>Pop Sunda</h3><p data-su="Kiwari" data-id="Modern">Kiwari</p><div class="chart-tile-num">✦</div></div>
+              <div class="chart-tile t3" onclick="searchQuery('jaipong terpopuler 2024')"><h3>Viral Jaipong</h3><p>Sapopoé</p><div class="chart-tile-num">🔥</div></div>
+              <div class="chart-tile t4" onclick="searchQuery('pop Sunda modern 2024')"><h3>Pop Sunda</h3><p>Kiwari</p><div class="chart-tile-num">✦</div></div>
             </div>
           </div>
           <div class="section">
-            <div class="section-header">
-              <div class="section-title" data-su="Genre Kawih" data-id="Genre Musik">Genre Kawih</div>
-            </div>
+            <div class="section-header"><div class="section-title">Genre Kawih</div></div>
             <div class="card-grid" id="genreGrid"></div>
           </div>
         </div>
@@ -617,6 +531,9 @@
           <div class="player-artist" id="playerArtist">—</div>
         </div>
       </div>
+      <button class="player-like" id="playerLikeBtn" onclick="toggleLikeCurrentTrack()">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </button>
       <div class="player-center">
         <div class="player-controls">
           <button class="ctrl-btn" id="btnRepeat" onclick="toggleRepeat()" title="Repeat">
@@ -663,16 +580,18 @@
   <div class="modal-box">
     <button class="modal-close" onclick="closeDonate()">✕</button>
     <div class="modal-title">☕ Donasi</div>
-    <div class="modal-sub" data-su="Hatur nuhun parantos ngarojong Kawihfy!" data-id="Terima kasih sudah mendukung Kawihfy!">
-      Hatur nuhun parantos ngarojong Kawihfy!
-    </div>
+    <div class="modal-sub">Hatur nuhun parantos ngarojong Kawihfy!</div>
     <div class="qr-box">
-      <img src="qr-donate.png" alt="QR Donate"
-        onerror="this.parentElement.innerHTML='<div style=\'padding:20px;color:#666;font-size:12px;text-align:center\'>📸 Taruh file<br><b>qr-donate.png</b><br>di folder yang sama</div>'">
+      <!-- Fix: use absolute path + multiple fallbacks -->
+      <img id="qrImg" src="./qr-donate.png" alt="QR Donate"
+        onerror="tryNextQR(this)">
     </div>
     <div class="qr-note">Scan QR di atas untuk donasi 🙏</div>
   </div>
 </div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <div id="yt-container"><div id="yt-player"></div></div>
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -680,6 +599,8 @@
 // ===== CONFIG =====
 const SHEET_ID = '1jEfiN_IXjPAu6-1HMYuZOhWyLMEUtyrhg4S_nl1T0AE';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+// Sheet2 URL (liked playlists per-user) — uses sheet name "Sheet2"
+const SHEET2_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet2`;
 
 // ===== STATE =====
 let currentLang = 'su';
@@ -692,6 +613,31 @@ let progressInterval = null;
 let repeatMode = false;
 let autoplayMode = true;
 let currentUser = null;
+let likedTracks = []; // array of track objects for current user
+let syncedLyrics = []; // [{time, text}]
+let lyricInterval = null;
+
+// ===== QR FALLBACKS =====
+const QR_PATHS = ['./qr-donate.png', '/qr-donate.png', 'qr-donate.png'];
+let qrIdx = 0;
+function tryNextQR(img) {
+  qrIdx++;
+  if (qrIdx < QR_PATHS.length) {
+    img.src = QR_PATHS[qrIdx];
+  } else {
+    img.parentElement.innerHTML = '<div style="padding:20px;color:#666;font-size:12px;text-align:center">📸 Taruh file<br><b>qr-donate.png</b><br>di folder yang sama</div>';
+  }
+}
+
+// ===== TOAST =====
+let toastTimer = null;
+function showToast(msg, duration=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), duration);
+}
 
 // ===== LOGIN =====
 async function fetchSheetData() {
@@ -728,12 +674,15 @@ function showApp() {
   document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
   setLang('su');
   document.getElementById('btnAutoplay').classList.add('on');
+  loadLikedFromStorage();
+  updateLikedBadge();
 }
 
 function doLogout() {
   if (!confirm('Yakin mau logout?')) return;
   sessionStorage.removeItem('kw_user');
   currentUser = null;
+  likedTracks = [];
   document.getElementById('app').classList.add('hidden');
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('loginAkun').value = '';
@@ -747,6 +696,7 @@ window.addEventListener('DOMContentLoaded', () => {
   ['loginAkun','loginSandi'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
   });
+  setupSearchAutocomplete();
 });
 
 // ===== LANGUAGE =====
@@ -765,8 +715,8 @@ function setLang(lang) {
 // ===== YOUTUBE =====
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('yt-player', {
-    height: '0', width: '0',
-    playerVars: { autoplay: 0 },
+    height:'0', width:'0',
+    playerVars: { autoplay:0 },
     events: {
       onStateChange: onPlayerStateChange,
       onReady: () => { loadHomeContent(); }
@@ -776,7 +726,7 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.PLAYING) {
-    isPlaying = true; updatePlayPauseBtn(); startProgressTracking();
+    isPlaying = true; updatePlayPauseBtn(); startProgressTracking(); startLyricTracking();
   } else if (event.data === YT.PlayerState.PAUSED) {
     isPlaying = false; updatePlayPauseBtn();
   } else if (event.data === YT.PlayerState.ENDED) {
@@ -826,9 +776,9 @@ function loadTrack(track) {
   document.getElementById('playerArtist').textContent = track.artist || '—';
   ytPlayer.loadVideoById(track.videoId);
   isPlaying = true; updatePlayPauseBtn();
-  updateQueueUI();
-  updateSppUI();
-  highlightTrack();
+  updateQueueUI(); updateSppUI(); highlightTrack();
+  updatePlayerLikeBtn();
+  syncedLyrics = []; // reset lyrics for new track
 }
 
 function startProgressTracking() {
@@ -845,6 +795,43 @@ function startProgressTracking() {
   }, 1000);
 }
 
+// ===== REAL-TIME LYRICS TRACKING =====
+function startLyricTracking() {
+  clearInterval(lyricInterval);
+  if (!syncedLyrics.length) return;
+  lyricInterval = setInterval(() => {
+    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+    const cur = ytPlayer.getCurrentTime() || 0;
+    highlightLyricLine(cur);
+  }, 300);
+}
+
+function highlightLyricLine(curTime) {
+  const lines = document.querySelectorAll('.lyric-line[data-time]');
+  if (!lines.length) return;
+  let activeIdx = -1;
+  lines.forEach((line, i) => {
+    const t = parseFloat(line.getAttribute('data-time'));
+    if (curTime >= t) activeIdx = i;
+  });
+  lines.forEach((line, i) => {
+    line.classList.remove('active', 'passed');
+    if (i === activeIdx) {
+      line.classList.add('active');
+      // Auto-scroll active line into view
+      line.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    } else if (i < activeIdx) {
+      line.classList.add('passed');
+    }
+  });
+}
+
+function seekToLyricLine(time) {
+  if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
+    ytPlayer.seekTo(time, true);
+  }
+}
+
 function seekTo(e) {
   if (!ytPlayer) return;
   const bar = document.getElementById('progressBar');
@@ -855,7 +842,7 @@ function fmtTime(sec) {
   return m+':'+(s<10?'0':'')+s;
 }
 
-// ===== SIDEBAR QUEUE UI =====
+// ===== SIDEBAR QUEUE =====
 function updateQueueUI() {
   const section = document.getElementById('queueSection');
   const list = document.getElementById('queueList');
@@ -867,21 +854,20 @@ function updateQueueUI() {
   currentQueue.forEach((t,i) => {
     const el = document.createElement('div');
     el.className = 'queue-item' + (i===currentTrackIndex?' active':'');
-    const playing = i===currentTrackIndex;
     el.innerHTML = `
       <img class="queue-thumb" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'">
       <div class="queue-info">
         <div class="queue-name">${esc(t.title)}</div>
         <div class="queue-artist">${esc(t.artist)}</div>
       </div>
-      ${playing ? '<div class="queue-playing-dot"></div>' : ''}
+      ${i===currentTrackIndex ? '<div class="queue-playing-dot"></div>' : ''}
     `;
     el.onclick = () => { currentTrackIndex=i; loadTrack(t); };
     list.appendChild(el);
   });
 }
 
-// ===== SEARCH PLAYLIST PANEL (inline right panel) =====
+// ===== SPP LIST =====
 function updateSppUI() {
   const list = document.getElementById('sppList');
   const count = document.getElementById('sppCount');
@@ -893,21 +879,20 @@ function updateSppUI() {
     const isActive = i === currentTrackIndex;
     el.className = 'spp-item' + (isActive ? ' active' : '');
     el.innerHTML = `
-      <div class="spp-num ${isActive?'active-icon':''}" id="sppnum${i}">${isActive ? '' : (i+1)}</div>
+      <div class="spp-num ${isActive?'active-icon':''}">${isActive ? '' : (i+1)}</div>
       <img class="spp-thumb" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'">
       <div class="spp-info">
         <div class="spp-name">${esc(t.title)}</div>
         <div class="spp-artist">${esc(t.artist)}</div>
       </div>
-      ${isActive ? `<div class="spp-playing-bar"><span></span><span></span><span></span></div>` : ''}
+      ${isActive ? '<div class="spp-playing-bar"><span></span><span></span><span></span></div>' : ''}
     `;
     el.onclick = () => { currentTrackIndex = i; loadTrack(t); };
     list.appendChild(el);
   });
-  // Scroll active item into view
   setTimeout(() => {
     const active = list.querySelector('.spp-item.active');
-    if (active) active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (active) active.scrollIntoView({ block:'nearest', behavior:'smooth' });
   }, 50);
 }
 
@@ -928,8 +913,8 @@ function normalizeTrack(raw) {
 }
 
 // ===== API =====
-async function fetchFromAPI(query) {
-  const res = await fetch(`/api?q=${encodeURIComponent(query)}`, { signal: AbortSignal.timeout(10000) });
+async function fetchFromAPI(query, maxResults=50) {
+  const res = await fetch(`/api?q=${encodeURIComponent(query)}&max=${maxResults}`, { signal: AbortSignal.timeout(10000) });
   if (!res.ok) throw new Error(`API error ${res.status}`);
   const data = await res.json();
   if (!Array.isArray(data)||data.length===0) throw new Error('Kosong');
@@ -938,49 +923,40 @@ async function fetchFromAPI(query) {
 
 async function searchQuery(q) {
   document.getElementById('searchInput').value = q;
+  hideSearchDropdown();
   await doSearch(q);
 }
 
 async function doSearch(query) {
   if (!query.trim()) return;
-  document.getElementById('homeContent').classList.add('hide');
-  document.getElementById('searchResults').classList.add('show');
+  showSection('search');
   document.getElementById('loadingText').classList.add('show');
   document.getElementById('trackList').innerHTML = '';
   document.getElementById('sppList').innerHTML = '';
   document.getElementById('errorMsg').classList.remove('show');
   document.getElementById('navHome').classList.remove('active');
+  document.getElementById('navLiked').classList.remove('active');
 
-  // Smart query: jika ada kata genre/bahasa tertentu, pakai apa adanya
   const hasContext = /sunda|india|jawa|melayu|minang|batak|pop|dangdut|campursari/i.test(query);
   const q = hasContext ? query : query + ' lagu';
 
   try {
-    const tracks = await fetchFromAPI(q);
+    const tracks = await fetchFromAPI(q, 50); // unlimited: request 50
     currentQueue = tracks;
     currentTrackIndex = -1;
-
-    // Update sidebar queue
     updateQueueUI();
-
-    // Render track list
     renderTrackList(tracks, query);
-
-    // Render inline playlist panel
     renderSppList(tracks);
-
     document.getElementById('searchTitle').textContent = `"${query}"`;
     document.getElementById('searchSubtitle').textContent = `${tracks.length} lagu ditemukan`;
   } catch(e) {
-    document.getElementById('errorMsg').textContent =
-      '⚠️ '+(currentLang==='su'?'Teu tiasa milarian. Cobian deui engké.':'Tidak dapat mencari. Coba lagi nanti.');
+    document.getElementById('errorMsg').textContent = '⚠️ ' + (currentLang==='su'?'Teu tiasa milarian. Cobian deui engké.':'Tidak dapat mencari. Coba lagi nanti.');
     document.getElementById('errorMsg').classList.add('show');
   } finally {
     document.getElementById('loadingText').classList.remove('show');
   }
 }
 
-// Render the right-side inline playlist panel
 function renderSppList(tracks) {
   const list = document.getElementById('sppList');
   const count = document.getElementById('sppCount');
@@ -989,9 +965,8 @@ function renderSppList(tracks) {
   tracks.forEach((t, i) => {
     const el = document.createElement('div');
     el.className = 'spp-item';
-    el.id = `spp-item-${i}`;
     el.innerHTML = `
-      <div class="spp-num" id="sppnum${i}">${i+1}</div>
+      <div class="spp-num">${i+1}</div>
       <img class="spp-thumb" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'">
       <div class="spp-info">
         <div class="spp-name">${esc(t.title)}</div>
@@ -1003,7 +978,6 @@ function renderSppList(tracks) {
   });
 }
 
-// Play all: start from index 0
 function playAllFromSearch() {
   if (!currentQueue.length) return;
   currentTrackIndex = 0;
@@ -1017,6 +991,7 @@ function renderTrackList(tracks, queryCtx) {
     const el = document.createElement('div');
     el.className = 'track-item';
     el.id = `track-item-${i}`;
+    const isLiked = isTrackLiked(t.videoId);
     el.innerHTML = `
       <div class="track-num" id="tnum${i}">${i+1}</div>
       <img class="track-thumb" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'">
@@ -1024,13 +999,19 @@ function renderTrackList(tracks, queryCtx) {
         <div class="track-name">${esc(t.title)}</div>
         <div class="track-artist">${esc(t.artist)||'—'}</div>
       </div>
-      <button class="track-info-btn" title="Detail">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-      </button>
+      <div class="track-btns">
+        <button class="track-like-btn ${isLiked?'liked':''}" title="Suka" data-vid="${esc(t.videoId)}">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+        <button class="track-info-btn" title="Detail">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        </button>
+      </div>
     `;
     el.querySelector('.track-info-btn').onclick = (e) => { e.stopPropagation(); openDetail(t); };
+    el.querySelector('.track-like-btn').onclick = (e) => { e.stopPropagation(); toggleLike(t, e.currentTarget); };
     el.addEventListener('click', (e) => {
-      if (e.target.closest('.track-info-btn')) return;
+      if (e.target.closest('.track-btns')) return;
       currentTrackIndex = i;
       loadTrack(t);
     });
@@ -1039,42 +1020,162 @@ function renderTrackList(tracks, queryCtx) {
 }
 
 function highlightTrack() {
-  // Track list
   document.querySelectorAll('.track-item').forEach((el,i) => {
     el.classList.toggle('playing', i===currentTrackIndex);
     const num = el.querySelector('.track-num');
-    if (num) {
-      num.classList.toggle('playing-icon', i===currentTrackIndex);
-      num.textContent = i===currentTrackIndex ? '♪' : (i+1);
-    }
+    if (num) { num.classList.toggle('playing-icon', i===currentTrackIndex); num.textContent = i===currentTrackIndex ? '♪' : (i+1); }
   });
-  // SPP list - sync active state
   document.querySelectorAll('.spp-item').forEach((el, i) => {
-    const wasActive = el.classList.contains('active');
     el.classList.toggle('active', i===currentTrackIndex);
     const num = el.querySelector('.spp-num');
-    if (num) {
-      num.classList.toggle('active-icon', i===currentTrackIndex);
-      num.textContent = i===currentTrackIndex ? '' : (i+1);
-    }
-    // Add/remove playing bars
+    if (num) { num.classList.toggle('active-icon', i===currentTrackIndex); num.textContent = i===currentTrackIndex ? '' : (i+1); }
     const existingBar = el.querySelector('.spp-playing-bar');
     if (i===currentTrackIndex && !existingBar) {
-      const bar = document.createElement('div');
-      bar.className = 'spp-playing-bar';
-      bar.innerHTML = '<span></span><span></span><span></span>';
-      el.appendChild(bar);
-    } else if (i!==currentTrackIndex && existingBar) {
-      existingBar.remove();
-    }
+      const bar = document.createElement('div'); bar.className='spp-playing-bar';
+      bar.innerHTML='<span></span><span></span><span></span>'; el.appendChild(bar);
+    } else if (i!==currentTrackIndex && existingBar) existingBar.remove();
   });
-  // Scroll active spp into view
   const activeSpp = document.querySelector('.spp-item.active');
-  if (activeSpp) activeSpp.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  if (activeSpp) activeSpp.scrollIntoView({ block:'nearest', behavior:'smooth' });
 }
 
 function esc(str) {
   return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== LIKED TRACKS =====
+function likedKey() { return `kw_liked_${currentUser||'guest'}`; }
+
+function loadLikedFromStorage() {
+  try {
+    const raw = localStorage.getItem(likedKey());
+    likedTracks = raw ? JSON.parse(raw) : [];
+  } catch { likedTracks = []; }
+}
+
+function saveLikedToStorage() {
+  try { localStorage.setItem(likedKey(), JSON.stringify(likedTracks)); } catch {}
+}
+
+function isTrackLiked(videoId) {
+  return likedTracks.some(t => t.videoId === videoId);
+}
+
+function toggleLike(track, btnEl) {
+  const idx = likedTracks.findIndex(t => t.videoId === track.videoId);
+  if (idx === -1) {
+    likedTracks.push(track);
+    btnEl && btnEl.classList.add('liked');
+    showToast('❤️ Ditambah ke Disuka');
+  } else {
+    likedTracks.splice(idx, 1);
+    btnEl && btnEl.classList.remove('liked');
+    showToast('💔 Dihapus dari Disuka');
+  }
+  saveLikedToStorage();
+  updateLikedBadge();
+  updatePlayerLikeBtn();
+  if (document.getElementById('likedContent').classList.contains('show')) renderLikedPage();
+}
+
+function toggleLikeCurrentTrack() {
+  if (!currentTrack) return;
+  const btn = document.getElementById('playerLikeBtn');
+  toggleLike(currentTrack, null);
+  btn.classList.toggle('liked', isTrackLiked(currentTrack.videoId));
+}
+
+function updatePlayerLikeBtn() {
+  const btn = document.getElementById('playerLikeBtn');
+  if (!btn || !currentTrack) return;
+  btn.classList.toggle('liked', isTrackLiked(currentTrack.videoId));
+}
+
+function updateLikedBadge() {
+  const badge = document.getElementById('likedBadge');
+  badge.textContent = likedTracks.length;
+  badge.style.display = likedTracks.length > 0 ? 'inline' : 'none';
+}
+
+function showLiked() {
+  showSection('liked');
+  document.getElementById('navLiked').classList.add('active');
+  document.getElementById('navHome').classList.remove('active');
+  renderLikedPage();
+}
+
+function renderLikedPage() {
+  const list = document.getElementById('likedTrackList');
+  const countEl = document.getElementById('likedCount');
+  countEl.textContent = likedTracks.length + ' lagu';
+  list.innerHTML = '';
+  if (!likedTracks.length) {
+    list.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:24px;text-align:center">Belum ada lagu yang disukai.<br>Tap ❤️ di lagu mana saja untuk menambahkan.</div>';
+    return;
+  }
+  likedTracks.forEach((t, i) => {
+    const el = document.createElement('div');
+    el.className = 'track-item';
+    el.draggable = true;
+    el.dataset.idx = i;
+    el.innerHTML = `
+      <div class="track-num">${i+1}</div>
+      <img class="track-thumb" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'">
+      <div class="track-info">
+        <div class="track-name">${esc(t.title)}</div>
+        <div class="track-artist">${esc(t.artist)||'—'}</div>
+      </div>
+      <div class="track-btns">
+        <button class="track-like-btn liked" title="Hapus dari suka" data-vid="${esc(t.videoId)}">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+        <button class="track-info-btn" title="Detail">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        </button>
+      </div>
+    `;
+    el.querySelector('.track-like-btn').onclick = (e) => { e.stopPropagation(); toggleLike(t, null); };
+    el.querySelector('.track-info-btn').onclick = (e) => { e.stopPropagation(); openDetail(t); };
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('.track-btns')) return;
+      currentQueue = [...likedTracks];
+      currentTrackIndex = i;
+      loadTrack(t);
+    });
+    // Drag reorder
+    el.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', i); el.classList.add('dragging'); });
+    el.addEventListener('dragend', () => el.classList.remove('dragging'));
+    el.addEventListener('dragover', (e) => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', (e) => {
+      e.preventDefault(); el.classList.remove('drag-over');
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = i;
+      if (fromIdx === toIdx) return;
+      const [moved] = likedTracks.splice(fromIdx, 1);
+      likedTracks.splice(toIdx, 0, moved);
+      saveLikedToStorage();
+      renderLikedPage();
+    });
+    list.appendChild(el);
+  });
+}
+
+function playAllLiked() {
+  if (!likedTracks.length) return;
+  currentQueue = [...likedTracks];
+  currentTrackIndex = 0;
+  loadTrack(currentQueue[0]);
+  updateQueueUI();
+}
+
+function clearAllLiked() {
+  if (!confirm('Hapus semua lagu yang disukai?')) return;
+  likedTracks = [];
+  saveLikedToStorage();
+  updateLikedBadge();
+  renderLikedPage();
+  showToast('Semua lagu dihapus dari Disuka');
 }
 
 // ===== DETAIL PANEL =====
@@ -1083,26 +1184,48 @@ function openDetail(track) {
   const panel = document.getElementById('detailPanel');
   const scroll = document.getElementById('detailScroll');
   panel.classList.add('open');
+  const isLiked = isTrackLiked(track.videoId);
   scroll.innerHTML = `
     <img class="detail-art" src="${esc(track.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(track.videoId)}/default.jpg'">
     <div class="detail-title">${esc(track.title)}</div>
     <div class="detail-artist">${esc(track.artist)||'Unknown'}</div>
     <div class="detail-actions">
-      <button class="detail-action-btn primary">
+      <button class="detail-action-btn primary" id="detailPlayBtn">
         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Putar
       </button>
-      <button class="detail-action-btn secondary">
-        <svg viewBox="0 0 24 24"><path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Antrean
+      <button class="detail-action-btn like-btn ${isLiked?'liked':''}" id="detailLikeBtn">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        ${isLiked?'Disuka':'Suka'}
       </button>
+    </div>
+    <div class="detail-actions" style="margin-top:0">
+      <button class="detail-action-btn secondary" id="detailQueueBtn">
+        <svg viewBox="0 0 24 24"><path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Antrian
+      </button>
+      <button class="detail-action-btn dl-btn" id="detailDlBtn">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh MP3
+      </button>
+    </div>
+    <div class="dl-progress" id="dlProgress">
+      <div class="dl-bar"><div class="dl-bar-fill" id="dlBarFill"></div></div>
+      <div class="dl-status" id="dlStatus">Mempersiapkan...</div>
     </div>
     <div class="detail-section-title">Lirik</div>
     <div class="detail-lyrics" id="detailLyrics"><span class="lyric-loading">Mencari lirik...</span></div>
     <div class="detail-section-title">Lagu Serupa</div>
     <div class="similar-list" id="similarList"><span style="font-size:12px;color:var(--text3)">Memuat...</span></div>
   `;
-  scroll.querySelector('.detail-action-btn.primary').onclick = () => loadTrack(track);
-  scroll.querySelector('.detail-action-btn.secondary').onclick = () => addToQueue(track);
-  scroll.querySelector('.detail-artist').onclick = () => searchQuery(track.artist);
+  document.getElementById('detailPlayBtn').onclick = () => loadTrack(track);
+  document.getElementById('detailQueueBtn').onclick = () => addToQueue(track);
+  document.getElementById('detailLikeBtn').onclick = () => {
+    const btn = document.getElementById('detailLikeBtn');
+    toggleLike(track, null);
+    const nowLiked = isTrackLiked(track.videoId);
+    btn.classList.toggle('liked', nowLiked);
+    btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> ${nowLiked?'Disuka':'Suka'}`;
+  };
+  document.getElementById('detailDlBtn').onclick = () => startDownload(track);
+  document.querySelector('.detail-artist').onclick = () => searchQuery(track.artist);
   currentTrack = track;
   fetchLyrics(track);
   loadSimilar(track);
@@ -1112,94 +1235,246 @@ function closeDetail() {
   document.getElementById('detailPanel').classList.remove('open');
 }
 
-// ===== LYRICS via lrclib.net =====
-// lrclib is a free, open-source lyrics database — no API key needed
+// ===== DOWNLOAD =====
+async function startDownload(track) {
+  const btn = document.getElementById('detailDlBtn');
+  const progress = document.getElementById('dlProgress');
+  const fill = document.getElementById('dlBarFill');
+  const status = document.getElementById('dlStatus');
+  if (!btn) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;animation:spin 1s linear infinite"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg> Unduh...';
+  progress.classList.add('show');
+  status.textContent = 'Menghubungi server...';
+  fill.style.width = '10%';
+
+  try {
+    // Try /api/download endpoint first
+    const dlUrl = `/api/download?videoId=${encodeURIComponent(track.videoId)}&title=${encodeURIComponent(track.title)}`;
+    
+    status.textContent = 'Mengunduh audio...';
+    fill.style.width = '40%';
+    
+    const res = await fetch(dlUrl, { signal: AbortSignal.timeout(60000) });
+    
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+    
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('json')) {
+      // Server returned JSON with a URL to download from
+      const data = await res.json();
+      if (data.url) {
+        fill.style.width = '70%';
+        status.textContent = 'Menyiapkan file...';
+        await downloadFromURL(data.url, track.title);
+      } else throw new Error(data.error || 'No URL returned');
+    } else {
+      // Direct binary stream
+      fill.style.width = '80%';
+      status.textContent = 'Menyimpan file...';
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      triggerDownload(blobUrl, `Kawihfy-${sanitizeFilename(track.title)}.mp3`);
+      URL.revokeObjectURL(blobUrl);
+    }
+    
+    fill.style.width = '100%';
+    status.textContent = '✅ Berhasil diunduh!';
+    logDownload(track);
+    showToast(`✅ Kawihfy-${track.title.substring(0,30)}.mp3`);
+    setTimeout(() => progress.classList.remove('show'), 3000);
+    
+  } catch(err) {
+    // Fallback: try to open YouTube audio directly
+    console.warn('Direct download failed, trying fallback:', err.message);
+    fill.style.width = '50%';
+    status.textContent = 'Mencoba metode alternatif...';
+    
+    try {
+      // Fallback: cobain ytdl proxy atau cobain buka youtube langsung
+      const fallbackUrl = `https://www.y2mate.com/youtube/${track.videoId}`;
+      fill.style.width = '100%';
+      status.textContent = '⚠️ Buka di y2mate untuk unduh';
+      window.open(fallbackUrl, '_blank');
+      showToast('⚠️ Download dibuka di y2mate');
+    } catch {
+      fill.style.width = '100%';
+      fill.style.background = 'var(--red)';
+      status.textContent = '❌ Gagal. Pastikan backend /api/download aktif.';
+      showToast('❌ Download gagal. Cek backend server.');
+    }
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh MP3';
+}
+
+function downloadFromURL(url, title) {
+  return new Promise((resolve) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Kawihfy-${sanitizeFilename(title)}.mp3`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(resolve, 1000);
+  });
+}
+
+function triggerDownload(url, filename) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function sanitizeFilename(name) {
+  return name.replace(/[<>:"/\\|?*]/g, '').replace(/\s+/g, '_').substring(0, 80);
+}
+
+// ===== LOG DOWNLOAD TO SHEET3 =====
+async function logDownload(track) {
+  // We write to Sheet3 via Apps Script or GAS web app
+  // Since we can't write to Google Sheets directly from client,
+  // we log to localStorage and show in a local log
+  try {
+    const logKey = `kw_dllog_${currentUser||'guest'}`;
+    const existing = JSON.parse(localStorage.getItem(logKey) || '[]');
+    existing.push({
+      user: currentUser,
+      title: track.title,
+      artist: track.artist,
+      videoId: track.videoId,
+      time: new Date().toISOString()
+    });
+    localStorage.setItem(logKey, JSON.stringify(existing));
+    console.log('[Kawihfy] Download logged:', track.title);
+  } catch {}
+}
+
+// ===== REAL-TIME LYRICS (lrclib.net) =====
 async function fetchLyrics(track) {
   const el = document.getElementById('detailLyrics');
   if (!el) return;
+  syncedLyrics = [];
+  clearInterval(lyricInterval);
+  
   try {
-    // Clean title: remove things in parens/brackets for better matching
-    const cleanTitle = track.title
-      .replace(/\(.*?\)/g, '')
-      .replace(/\[.*?\]/g, '')
-      .replace(/official.*$/i, '')
-      .replace(/lyrics.*$/i, '')
-      .replace(/mv.*$/i, '')
-      .trim();
-    const cleanArtist = (track.artist||'').split(',')[0].trim(); // first artist only
-
-    // lrclib.net free API — returns plain text and synced lyrics
+    const cleanTitle = track.title.replace(/\(.*?\)/g,'').replace(/\[.*?\]/g,'').replace(/official.*$/i,'').replace(/lyrics.*$/i,'').replace(/mv.*$/i,'').replace(/audio.*$/i,'').trim();
+    const cleanArtist = (track.artist||'').split(',')[0].trim();
     const url = `https://lrclib.net/api/search?track_name=${encodeURIComponent(cleanTitle)}&artist_name=${encodeURIComponent(cleanArtist)}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(7000) });
     if (!res.ok) throw new Error('lrclib error');
     const results = await res.json();
     if (!Array.isArray(results) || results.length === 0) throw new Error('Tidak ada');
-
-    // Pick best match: prefer with plainLyrics, then syncedLyrics
-    const best = results.find(r => r.plainLyrics) || results.find(r => r.syncedLyrics) || results[0];
-
-    let lyricsText = best.plainLyrics || '';
-    if (!lyricsText && best.syncedLyrics) {
-      // Strip timestamps from synced lyrics: "[00:12.34]Text" → "Text"
-      lyricsText = best.syncedLyrics.replace(/\[\d{2}:\d{2}\.\d{2,3}\]/g, '').trim();
+    const best = results.find(r => r.syncedLyrics) || results.find(r => r.plainLyrics) || results[0];
+    
+    if (best.syncedLyrics) {
+      // Parse synced lyrics for real-time highlight
+      const parsed = parseSyncedLyrics(best.syncedLyrics);
+      if (parsed.length) {
+        syncedLyrics = parsed;
+        renderSyncedLyrics(el, parsed);
+        if (isPlaying) startLyricTracking();
+        return;
+      }
     }
-
-    if (lyricsText && lyricsText.trim()) {
-      el.innerHTML = lyricsText.replace(/\n/g,'<br>');
-      el.style.fontStyle = 'normal';
-    } else {
-      throw new Error('Kosong');
+    
+    // Fallback to plain lyrics
+    if (best.plainLyrics && best.plainLyrics.trim()) {
+      el.innerHTML = best.plainLyrics.replace(/\n/g,'<br>');
+      el.style.fontStyle = 'italic';
+      return;
     }
+    throw new Error('Kosong');
+    
   } catch {
-    // Fallback: try searching just by title (no artist), more lenient
+    // Try fallback search (title only)
     try {
       const cleanTitle2 = track.title.replace(/\(.*?\)/g,'').replace(/\[.*?\]/g,'').split('-')[0].trim();
       const url2 = `https://lrclib.net/api/search?track_name=${encodeURIComponent(cleanTitle2)}`;
       const res2 = await fetch(url2, { signal: AbortSignal.timeout(6000) });
       const results2 = await res2.json();
       if (Array.isArray(results2) && results2.length > 0) {
-        const best2 = results2.find(r => r.plainLyrics) || results2[0];
-        let lyricsText2 = best2.plainLyrics || '';
-        if (!lyricsText2 && best2.syncedLyrics) {
-          lyricsText2 = best2.syncedLyrics.replace(/\[\d{2}:\d{2}\.\d{2,3}\]/g, '').trim();
+        const best2 = results2.find(r => r.syncedLyrics) || results2.find(r => r.plainLyrics) || results2[0];
+        if (best2.syncedLyrics) {
+          const parsed = parseSyncedLyrics(best2.syncedLyrics);
+          if (parsed.length) {
+            syncedLyrics = parsed;
+            el.innerHTML = `<span style="font-size:10px;color:var(--text3);display:block;margin-bottom:8px">⚠️ Mungkin beda versi</span>`;
+            renderSyncedLyrics(el, parsed, true);
+            if (isPlaying) startLyricTracking();
+            return;
+          }
         }
-        if (lyricsText2) {
-          el.innerHTML = `<span style="font-size:10px;color:var(--text3);font-style:normal;display:block;margin-bottom:8px">⚠️ Mungkin beda versi</span>` + lyricsText2.replace(/\n/g,'<br>');
-          el.style.fontStyle = 'normal';
+        if (best2.plainLyrics) {
+          el.innerHTML = `<span style="font-size:10px;color:var(--text3);display:block;margin-bottom:8px">⚠️ Mungkin beda versi</span>` + best2.plainLyrics.replace(/\n/g,'<br>');
+          el.style.fontStyle = 'italic';
           return;
         }
       }
       throw new Error();
     } catch {
-      el.innerHTML = '<span style="color:var(--text3);font-style:normal;font-size:12px">Lirik tidak tersedia untuk lagu ini.<br><br>Lrclib.net mungkin belum punya lirik bahasa Sunda/Indonesia.</span>';
+      el.innerHTML = '<span style="color:var(--text3);font-style:normal;font-size:12px">Lirik tidak tersedia untuk lagu ini.<br><br>Lrclib.net mungkin belum punya lirik lagu ini.</span>';
     }
   }
 }
 
-// ===== SIMILAR: Focused by artist + genre =====
+function parseSyncedLyrics(syncedText) {
+  const lines = syncedText.split('\n');
+  const result = [];
+  const re = /^\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)$/;
+  for (const line of lines) {
+    const m = line.match(re);
+    if (m) {
+      const time = parseInt(m[1])*60 + parseInt(m[2]) + parseInt(m[3].padEnd(3,'0'))/1000;
+      const text = m[4].trim();
+      if (text) result.push({ time, text });
+    }
+  }
+  return result;
+}
+
+function renderSyncedLyrics(el, lyrics, append=false) {
+  const container = document.createElement('div');
+  lyrics.forEach((line, i) => {
+    const span = document.createElement('span');
+    span.className = 'lyric-line';
+    span.setAttribute('data-time', line.time);
+    span.textContent = line.text;
+    span.onclick = () => seekToLyricLine(line.time);
+    container.appendChild(span);
+  });
+  if (append) {
+    el.appendChild(container);
+  } else {
+    el.innerHTML = '';
+    el.appendChild(container);
+  }
+  el.style.fontStyle = 'normal';
+}
+
+// ===== SIMILAR =====
 async function loadSimilar(track) {
   const el = document.getElementById('similarList');
   if (!el) return;
   try {
-    // Build a smarter query: focus on same artist OR genre
-    // Extract likely genre/keywords from track name
     const genreHints = ['Sunda','Jawa','India','Pop','Dangdut','Jaipong','Degung','Kacapi','Campursari','Melayu'];
     let detectedGenre = '';
     for (const g of genreHints) {
       if (track.title.includes(g) || track.artist.includes(g)) { detectedGenre = g; break; }
     }
-    // Query: artis yang sama dulu, kalau ada genre pakai itu
     const artistQuery = track.artist ? `${track.artist} lagu` : '';
     const genreQuery = detectedGenre ? `${detectedGenre} lagu serupa` : 'lagu serupa';
     const q = artistQuery || genreQuery;
-
-    const results = await fetchFromAPI(q.trim());
-    // Filter out current track, show max 6
+    const results = await fetchFromAPI(q.trim(), 20);
     const filtered = results.filter(r => r.videoId !== track.videoId).slice(0, 6);
-    if (!filtered.length) {
-      el.innerHTML = '<span style="font-size:12px;color:var(--text3)">Tidak ada lagu serupa.</span>';
-      return;
-    }
+    if (!filtered.length) { el.innerHTML = '<span style="font-size:12px;color:var(--text3)">Tidak ada lagu serupa.</span>'; return; }
     el.innerHTML = '';
     filtered.forEach(t => {
       const item = document.createElement('div');
@@ -1212,16 +1487,10 @@ async function loadSimilar(track) {
         </div>
       `;
       item.onclick = () => {
-        // Add to queue if not there, then play
         const idx = currentQueue.findIndex(x => x.videoId === t.videoId);
-        if (idx === -1) {
-          currentQueue.push(t);
-          currentTrackIndex = currentQueue.length - 1;
-        } else {
-          currentTrackIndex = idx;
-        }
-        loadTrack(t);
-        openDetail(t);
+        if (idx === -1) { currentQueue.push(t); currentTrackIndex = currentQueue.length-1; }
+        else currentTrackIndex = idx;
+        loadTrack(t); openDetail(t);
       };
       el.appendChild(item);
     });
@@ -1232,12 +1501,101 @@ async function loadSimilar(track) {
 
 function addToQueue(track) {
   if (!track) return;
-  const exists = currentQueue.findIndex(t=>t.videoId===track.videoId);
-  if (exists === -1) {
+  if (!currentQueue.find(t => t.videoId===track.videoId)) {
     currentQueue.push(track);
-    updateQueueUI();
-    updateSppUI();
+    updateQueueUI(); updateSppUI();
+    showToast('➕ Ditambah ke antrian');
   }
+}
+
+// ===== SEARCH AUTOCOMPLETE =====
+const SEARCH_SUGGESTIONS = [
+  'kawih Sunda populer 2024','Darso tembang Sunda','Kacapi Suling Sunda',
+  'Degung Sunda klasik','Jaipong viral','Pop Sunda modern',
+  'lagu India populer','campursari Jawa populer','Nining Meida',
+  'Doel Sumbang','Detty Kurnia','tembang cianjuran','calung Sunda',
+  'Los Dol Denny Caknan','Via Vallen','Nella Kharisma','Aftershine',
+  'lagu Sunda sedih','lagu Sunda romantis','lagu Sunda viral TikTok',
+];
+let searchHistory = [];
+
+function setupSearchAutocomplete() {
+  const input = document.getElementById('searchInput');
+  const dropdown = document.getElementById('searchDropdown');
+  
+  // Load history
+  try { searchHistory = JSON.parse(localStorage.getItem('kw_search_history')||'[]'); } catch {}
+  
+  input.addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    if (!val) { showHome(); hideSearchDropdown(); return; }
+    showAutocomplete(val);
+  });
+  
+  input.addEventListener('focus', (e) => {
+    const val = e.target.value.trim();
+    if (val) showAutocomplete(val);
+    else showRecentSearches();
+  });
+  
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const val = input.value.trim();
+      if (val) { addToHistory(val); searchQuery(val); }
+      hideSearchDropdown();
+    }
+    if (e.key === 'Escape') hideSearchDropdown();
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('searchWrap').contains(e.target)) hideSearchDropdown();
+  });
+}
+
+function showAutocomplete(query) {
+  const dropdown = document.getElementById('searchDropdown');
+  const q = query.toLowerCase();
+  
+  // Match from suggestions + history
+  const matches = [...new Set([
+    ...searchHistory.filter(h => h.toLowerCase().includes(q)).slice(0,3),
+    ...SEARCH_SUGGESTIONS.filter(s => s.toLowerCase().includes(q)).slice(0,5),
+  ])].slice(0, 6);
+  
+  if (!matches.length) { hideSearchDropdown(); return; }
+  
+  dropdown.innerHTML = matches.map(m => {
+    const isHistory = searchHistory.includes(m);
+    const highlighted = m.replace(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<span class="sd-highlight">$1</span>');
+    return `<div class="sd-item" onclick="searchQuery(${JSON.stringify(m)})">
+      <svg viewBox="0 0 24 24"><path d="${isHistory ? 'M13 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7v3l4-4-4-4v3z' : 'M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'}"/></svg>
+      ${highlighted}
+    </div>`;
+  }).join('');
+  
+  dropdown.classList.add('show');
+}
+
+function showRecentSearches() {
+  if (!searchHistory.length) return;
+  const dropdown = document.getElementById('searchDropdown');
+  dropdown.innerHTML = `<div style="padding:8px 14px 4px;font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase">Riwayat</div>` +
+    searchHistory.slice(0,5).map(h => `
+      <div class="sd-item" onclick="searchQuery(${JSON.stringify(h)})">
+        <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7v3l4-4-4-4v3z"/></svg>
+        ${esc(h)}
+      </div>
+    `).join('');
+  dropdown.classList.add('show');
+}
+
+function hideSearchDropdown() {
+  document.getElementById('searchDropdown').classList.remove('show');
+}
+
+function addToHistory(query) {
+  searchHistory = [query, ...searchHistory.filter(h => h !== query)].slice(0, 20);
+  try { localStorage.setItem('kw_search_history', JSON.stringify(searchHistory)); } catch {}
 }
 
 // ===== HOME =====
@@ -1261,80 +1619,64 @@ const SUNDA_GENRES = [
 async function loadHomeContent() {
   const ag = document.getElementById('artistsGrid');
   SUNDA_ARTISTS.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div style="background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:44px;aspect-ratio:1;border-radius:50%;margin-bottom:10px">${a.emoji}</div>
-      <div class="card-title">${a.name}</div>
-      <div class="card-sub">Artis</div>
-      <div class="card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-    `;
-    card.onclick = () => searchQuery(a.query);
-    ag.appendChild(card);
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML=`<div style="background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:44px;aspect-ratio:1;border-radius:50%;margin-bottom:10px">${a.emoji}</div><div class="card-title">${a.name}</div><div class="card-sub">Artis</div><div class="card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
+    card.onclick = () => searchQuery(a.query); ag.appendChild(card);
   });
-
   const gg = document.getElementById('genreGrid');
   SUNDA_GENRES.forEach(g => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.background = g.bg;
-    card.innerHTML = `
-      <div style="font-size:44px;text-align:center;padding:16px 0">${g.emoji}</div>
-      <div class="card-title">${g.name}</div>
-      <div class="card-sub">Genre</div>
-      <div class="card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-    `;
-    card.onclick = () => searchQuery(g.query);
-    gg.appendChild(card);
+    const card = document.createElement('div'); card.className='card'; card.style.background=g.bg;
+    card.innerHTML=`<div style="font-size:44px;text-align:center;padding:16px 0">${g.emoji}</div><div class="card-title">${g.name}</div><div class="card-sub">Genre</div><div class="card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
+    card.onclick = () => searchQuery(g.query); gg.appendChild(card);
   });
-
   const tg = document.getElementById('trendingGrid');
   for (let i=0;i<6;i++) {
-    const sk = document.createElement('div');
-    sk.className='card';
+    const sk=document.createElement('div'); sk.className='card';
     sk.innerHTML='<div class="card-img skeleton"></div><div class="skel-line" style="width:80%"></div><div class="skel-line" style="width:50%"></div>';
     tg.appendChild(sk);
   }
   try {
-    const results = await fetchFromAPI('kawih Sunda populer 2024');
+    const results = await fetchFromAPI('kawih Sunda populer 2024', 20);
     tg.innerHTML = '';
     const slice = results.slice(0,8);
     slice.forEach((t,i) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img class="card-img" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'">
-        <div class="card-title">${esc(t.title)}</div>
-        <div class="card-sub">${esc(t.artist)}</div>
-        <div class="card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      `;
-      card.onclick = () => {
-        currentQueue = slice;
-        currentTrackIndex = i;
-        loadTrack(t);
-        updateQueueUI();
-      };
+      const card = document.createElement('div'); card.className='card';
+      card.innerHTML=`<img class="card-img" src="${esc(t.thumb)}" onerror="this.src='https://i.ytimg.com/vi/${esc(t.videoId)}/default.jpg'"><div class="card-title">${esc(t.title)}</div><div class="card-sub">${esc(t.artist)}</div><div class="card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`;
+      card.onclick = () => { currentQueue=slice; currentTrackIndex=i; loadTrack(t); updateQueueUI(); };
       tg.appendChild(card);
     });
-  } catch {
-    tg.innerHTML = '<div style="color:var(--text3);font-size:12px;grid-column:1/-1;padding:16px">Gagal memuat trend.</div>';
-  }
+  } catch { tg.innerHTML='<div style="color:var(--text3);font-size:12px;grid-column:1/-1;padding:16px">Gagal memuat trend.</div>'; }
 }
 
-// ===== UI HELPERS =====
+// ===== SECTION MANAGEMENT =====
+function showSection(section) {
+  document.getElementById('homeContent').style.display = section==='home' ? '' : 'none';
+  const searchEl = document.getElementById('searchResults');
+  const likedEl = document.getElementById('likedContent');
+  searchEl.classList.toggle('show', section==='search');
+  likedEl.classList.toggle('show', section==='liked');
+  if (section==='home') document.getElementById('homeContent').classList.remove('hide');
+  else document.getElementById('homeContent').classList.add('hide');
+}
+
 function showHome() {
-  document.getElementById('homeContent').classList.remove('hide');
-  document.getElementById('searchResults').classList.remove('show');
+  showSection('home');
   document.getElementById('searchInput').value='';
   document.getElementById('navHome').classList.add('active');
+  document.getElementById('navLiked').classList.remove('active');
+  hideSearchDropdown();
 }
+
 function focusSearch() { document.getElementById('searchInput').focus(); }
 function openDonate() { document.getElementById('donateModal').classList.add('show'); }
 function closeDonate() { document.getElementById('donateModal').classList.remove('show'); }
+document.getElementById('donateModal').addEventListener('click', function(e){ if(e.target===this) closeDonate(); });
+document.getElementById('searchInput').addEventListener('input', e => { if (!e.target.value.trim()) showHome(); });
 
-document.getElementById('donateModal').addEventListener('click', function(e){ if(e.target===this)closeDonate(); });
-document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(e.target.value); });
-document.getElementById('searchInput').addEventListener('input', e => { if(!e.target.value.trim()) showHome(); });
+// ===== SPIN ANIMATION =====
+const style = document.createElement('style');
+style.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
 </script>
 </body>
 </html>
